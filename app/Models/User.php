@@ -9,8 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Properties;
 use App\Models\Bookings;
 use App\Models\Reviews;
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -67,5 +69,15 @@ class User extends Authenticatable
     public function reviews() {
         return $this->hasMany(Reviews::class, 'customer_id');
     }
+
+public function canAccessPanel(Panel $panel): bool
+    {
+        return match ($panel->getId()) {
+            'admin' => $this->role === 'admin',
+            'penyewa' => $this->role === 'penyewa',
+            default => false,
+        };
+    }
+
 
 }
