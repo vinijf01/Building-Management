@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
             $table->enum('payment_method', ['bank_transfer', 'Qris', 'eMoney']);
             $table->enum('payment_type', ['dp', 'full']);
-            $table->enum('payment_status', ['paid','pending','failed'])->default('pending');
+            $table->enum('payment_status', ['pending_verification', 'verified','rejected','cancelled'])->default('pending_verification');
             $table->decimal('amount',12,2);
             $table->string('proof_image')->nullable();
             $table->datetime('payment_due_date')->nullable();

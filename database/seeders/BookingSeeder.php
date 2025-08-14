@@ -25,7 +25,7 @@ class BookingSeeder extends Seeder
                 'customer_id' => $customer->id,
                 'start_date' => Carbon::today()->addDays(7)->toDateString(),
                 'end_date' => Carbon::today()->addDays(7)->toDateString(),
-                'status' => 'pending',
+                'status' => 'pending_payment',
                 'total_price' => $property->price,
             ]);
         }

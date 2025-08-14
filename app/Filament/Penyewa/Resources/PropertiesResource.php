@@ -19,9 +19,9 @@ use Illuminate\Support\Str;
 class PropertiesResource extends Resource
 {
     protected static ?string $model = Properties::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Properties';
     public static function form(Form $form): Form
     {
         return $form
