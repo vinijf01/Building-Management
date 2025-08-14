@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Auth;
 class PropertyImagesResource extends Resource
 {
     protected static ?string $model = PropertyImages::class;
-
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static ?string $navigationGroup = 'Properties';
 
     public static function form(Form $form): Form
     {

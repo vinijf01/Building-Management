@@ -21,7 +21,7 @@ class PaymentSeeder extends Seeder
                 'booking_id' => $booking->id,
                 'payment_method' => 'bank_transfer',
                 'payment_type' => 'full',
-                'payment_status' => 'pending',
+                'payment_status' => 'pending_verification',
                 'amount' => $booking->total_price,
                 'proof_image' => null,
                 'payment_due_date' => Carbon::now()->addDay()->toDateTimeString(),
