@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'swiper/swiper-bundle.css';
+
+/* .swiper-button-next,
+.swiper-button-prev {
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: black;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 8px;
+} */
+
+.swiper-button-next,
+.swiper-button-prev {
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    border-radius: 9999px; /* Biar bulat sempurna */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    color: black;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+/* Posisi kiri dan kanan */
+.swiper-button-prev {
+    left: 8px; /* Dekat ke kiri */
+}
+.swiper-button-next {
+    right: 8px; /* Dekat ke kanan */
+}
+
+/* Kecilkan ikon panah */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 14px !important;
+    font-weight: 700; /* Default-nya 16px, kecilkan jadi 12 */
+}
+
+
+/* Bullet default */
+.custom-bullet {
+    background: #ddd;
+    width: 8px;
+    height: 8px;
+    opacity: 1;
+    margin: 0 4px;
+}
+
+/* Bullet aktif */
+.custom-bullet-active {
+    background: #000;
+}
+
