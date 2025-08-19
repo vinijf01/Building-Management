@@ -9,7 +9,7 @@ class Schedules extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['property_id', 'start_date', 'end_date'];
+    protected $fillable = ['property_id', 'booking_id', 'start_date', 'end_date', 'status'];
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -19,5 +19,11 @@ class Schedules extends Model
     public function property(){
         return $this->belongsTo(Properties::class);
     }
+
+     public function booking()
+    {
+        return $this->belongsTo(Bookings::class, 'booking_id');
+    }
+
 
 }

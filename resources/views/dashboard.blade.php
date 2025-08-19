@@ -176,7 +176,6 @@
                         (object) [
                             'title' => 'Modern City Apartment',
                             'description' => 'Spacious and modern 2-bedroom apartment in the city center.',
-                            'bedrooms' => 2,
                             'price' => 1200,
                             'image_url' =>
                                 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
@@ -184,7 +183,6 @@
                         (object) [
                             'title' => 'Cozy Studio Apartment',
                             'description' => 'Perfect for singles or couples, close to public transport.',
-                            'bedrooms' => 1,
                             'price' => 800,
                             'image_url' =>
                                 'https://images.unsplash.com/photo-1560448075-bb4caa6d7732?auto=format&fit=crop&w=600&q=80',
@@ -192,11 +190,11 @@
                         (object) [
                             'title' => 'Luxury Downtown Loft',
                             'description' => 'High ceilings and great city views with 3 bedrooms.',
-                            'bedrooms' => 3,
                             'price' => 2500,
                             'image_url' =>
                                 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80',
                         ],
+
                         (object) [
                             'title' => 'Minimalist Apartment',
                             'description' => 'Clean design with bright lighting and open space.',
@@ -252,6 +250,7 @@
                             'price' => 1300,
                             'image_url' =>
                                 'https://images.unsplash.com/photo-1599420186946-7b6a8e0c1b4c?auto=format&fit=crop&w=600&q=80',
+
                         ],
                     ]);
                 @endphp
