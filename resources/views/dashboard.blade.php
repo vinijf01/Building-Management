@@ -64,21 +64,18 @@
                         (object)[
                             'title' => 'Modern City Apartment',
                             'description' => 'Spacious and modern 2-bedroom apartment in the city center.',
-                            'bedrooms' => 2,
                             'price' => 1200,
                             'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
                         ],
                         (object)[
                             'title' => 'Cozy Studio Apartment',
                             'description' => 'Perfect for singles or couples, close to public transport.',
-                            'bedrooms' => 1,
                             'price' => 800,
                             'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
                         ],
                         (object)[
                             'title' => 'Luxury Downtown Loft',
                             'description' => 'High ceilings and great city views with 3 bedrooms.',
-                            'bedrooms' => 3,
                             'price' => 2500,
                             'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
                         ],
@@ -104,21 +101,18 @@
                         (object)[
                             'title' => 'Affordable Kost Near Campus',
                             'description' => 'Clean and safe kost for students, includes Wi-Fi and utilities.',
-                            'bedrooms' => 1,
                             'price' => 300,
                             'image_url' => 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80',
                         ],
                         (object)[
                             'title' => 'Female-only Kost with AC',
                             'description' => 'Quiet and comfortable rooms with AC and laundry services.',
-                            'bedrooms' => 1,
                             'price' => 450,
                             'image_url' => 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80',
                         ],
                         (object)[
                             'title' => 'Shared Kost House',
                             'description' => 'Large house with shared bedrooms and communal kitchen.',
-                            'bedrooms' => 2,
                             'price' => 350,
                             'image_url' => 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80',
                         ],
