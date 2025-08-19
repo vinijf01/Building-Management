@@ -38,6 +38,7 @@ class PenyewaPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Penyewa/Widgets'), for: 'App\\Filament\\Penyewa\\Widgets')
             ->widgets([
                 \App\Filament\Penyewa\Widgets\PenyewaDashboardOverview::class,
+                 \App\Filament\Penyewa\Widgets\PenyewaIncomeChart::class,
                 
             ])
             ->middleware([
