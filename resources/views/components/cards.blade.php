@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
     <img src="{{ $imageUrl }}" alt="{{ $title }}" class="w-full h-48 object-cover">
     <div class="p-4">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ $title }}</h3>
@@ -10,7 +10,7 @@
         {{-- Ubah button jadi link --}}
         <a href="{{ $buttonUrl ?? '#' }}" 
            class="block text-center w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 transition">
-           {{ $buttonText ?? 'Book Now' }}
+           {{ $buttonText }}
         </a>
     </div>
 </div>

@@ -37,6 +37,46 @@ class PropertiesSeeder extends Seeder
                 'category' => 'reguler',
                 'price' => 250000,
             ]);
+
+            Properties::create([
+                'penyewa_id' => $penyewa->id,
+                'name' => 'Gedung Serbaguna C',
+                'slug' => Str::slug('Gedung Serbaguna C'),
+                'description' => 'Gedung cocok untuk seminar, workshop, dan pesta kecil.',
+                'cover_image' => null,
+                'category' => 'eksklusif',
+                'price' => 1500000,
+            ]);
+
+            Properties::create([
+                'penyewa_id' => $penyewa->id,
+                'name' => 'Gedung Serbaguna D',
+                'slug' => Str::slug('Gedung Serbaguna D'),
+                'description' => 'Gedung cocok untuk seminar, workshop, dan pesta kecil.',
+                'cover_image' => null,
+                'category' => 'eksklusif',
+                'price' => 1700000,
+            ]);
+
+            Properties::create([
+                'penyewa_id' => $penyewa->id,
+                'name' => 'Gedung Serbaguna E',
+                'slug' => Str::slug('Gedung Serbaguna E'),
+                'description' => 'Gedung cocok untuk seminar, workshop, dan pesta kecil.',
+                'cover_image' => null,
+                'category' => 'eksklusif',
+                'price' => 1800000,
+            ]);
+
+            Properties::create([
+                'penyewa_id' => $penyewa->id,
+                'name' => 'Gedung Serbaguna F',
+                'slug' => Str::slug('Gedung Serbaguna F'),
+                'description' => 'Gedung cocok untuk seminar, workshop, dan pesta kecil.',
+                'cover_image' => null,
+                'category' => 'eksklusif',
+                'price' => 1300000,
+            ]);
         }
     }
 }

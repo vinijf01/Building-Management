@@ -32,7 +32,7 @@
                         <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 sticky top-20">
                             <p class="text-2xl font-bold text-blue-600 mb-4">${{ number_format($product->price, 2) }}
                             </p>
-                            <a href="{{ route('book.now', $product->slug) }}"
+                            <a href="#"
                                 class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
                                 Book Now
                             </a>
@@ -53,13 +53,23 @@
             {{-- Related Products --}}
             @if ($relatedProducts->count())
                 <div class="bg-white my-12 rounded-2xl shadow-lg overflow-hidden px-6 sm:p-8 lg:p-10">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">You Might Also Like ✨</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        @foreach ($relatedProducts as $apartment)
-                            <x-cards :title="$apartment->title" :description="$apartment->description" :price="$apartment->price" :image-url="asset('storage/' . $apartment->cover_image)"
-                                button-text="Book Now" :button-url="route('book.now', $apartment->slug)" />
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">You Might Also Like</h2>
+                    <div class="swiper mySwiper">
+                    <div class="swiper-wrapper mb-12">
+                        @foreach ($relatedProducts as $unit)
+                            <div class="swiper-slide">
+                                <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$property->cover_image
+                                            ? asset('storage/' . $property->cover_image)
+                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+                                    :button-url="route('detail', $unit->slug)" />
+                            </div>
                         @endforeach
                     </div>
+
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
                 </div>
             @endif
         </div>
