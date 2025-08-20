@@ -9,8 +9,10 @@
 
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 sm:p-8 lg:p-10">
                 <div class="mb-8">
-                    <img src="{{ asset('storage/' . $product->cover_image) }}" alt="{{ $product->title }}"
-                        class="w-full h-[400px] object-cover rounded-xl shadow">
+                    <img src="{{ $product->cover_image
+                        ? asset('storage/' . $product->cover_image)
+                        : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80' }}"
+                        alt="{{ $product->title }}" class="w-full h-[400px] object-cover rounded-xl shadow">
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -30,7 +32,8 @@
 
                     <div>
                         <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-6 sticky top-20">
-                            <p class="text-2xl font-bold text-blue-600 mb-4">${{ number_format($product->price, 2) }}
+                            <p class="text-2xl font-bold text-blue-600 mb-4">Rp.
+                                {{ number_format($product->price, 0, ',', '.') }}
                             </p>
                             <a href="#"
                                 class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
@@ -55,21 +58,21 @@
                 <div class="bg-white my-12 rounded-2xl shadow-lg overflow-hidden px-6 sm:p-8 lg:p-10">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">You Might Also Like</h2>
                     <div class="swiper mySwiper">
-                    <div class="swiper-wrapper mb-12">
-                        @foreach ($relatedProducts as $unit)
-                            <div class="swiper-slide">
-                                <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
-                                            ? asset('storage/' . $unit->cover_image)
-                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
-                                    :button-url="route('detail', $unit->slug)" />
-                            </div>
-                        @endforeach
-                    </div>
+                        <div class="swiper-wrapper mb-12">
+                            @foreach ($relatedProducts as $unit)
+                                <div class="swiper-slide">
+                                    <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
+                                        ? asset('storage/' . $unit->cover_image)
+                                        : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+                                        :button-url="route('detail', $unit->slug)" />
+                                </div>
+                            @endforeach
+                        </div>
 
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-pagination"></div>
-                </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                 </div>
             @endif
         </div>

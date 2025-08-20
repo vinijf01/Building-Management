@@ -100,13 +100,13 @@
                                         <div class="border-t border-gray-200 bg-white p-4">
                                             <div class="flex justify-between gap-4">
                                                 <label for="price-from" class="flex items-center gap-2 w-full">
-                                                    <span class="text-sm text-gray-600">$</span>
+                                                    <span class="text-sm text-gray-600">Rp. </span>
                                                     <input type="number" id="price-from" name="price_from"
                                                         placeholder="From" value="{{ request('price_from') }}"
                                                         class="w-full rounded-md border-gray-200 shadow-xs sm:text-sm">
                                                 </label>
                                                 <label for="price-to" class="flex items-center gap-2 w-full">
-                                                    <span class="text-sm text-gray-600">$</span>
+                                                    <span class="text-sm text-gray-600">Rp. </span>
                                                     <input type="number" id="price-to" name="price_to"
                                                         placeholder="To" value="{{ request('price_to') }}"
                                                         class="w-full rounded-md border-gray-200 shadow-xs sm:text-sm">

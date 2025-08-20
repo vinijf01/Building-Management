@@ -18,11 +18,28 @@
             @endauth
 
             <!-- Nav Links Desktop -->
+            <!-- Nav Links Desktop -->
             <ul class="hidden md:flex space-x-12 font-semibold">
-                <li><a href="{{ route('dashboard') }}" class="hover:text-gray-300">Home</a></li>
-                <li><a href="{{ route('products.list') }}" class="hover:text-gray-300">Collections</a></li>
-                <li><a href="#" class="hover:text-gray-300">Contact Us</a></li>
+                <li>
+                    <a href="{{ auth()->check() ? route('dashboard') : url('/') }}"
+                        class="hover:text-blue-500 {{ (auth()->check() && request()->routeIs('dashboard')) || (!auth()->check() && request()->is('/')) ? 'text-blue-500' : 'text-gray-900' }}">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('products.list') }}"
+                        class="hover:text-blue-500 {{ request()->routeIs('products.list') ? 'text-blue-500' : 'text-gray-900' }}">
+                        Collections
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="hover:text-blue-500 {{ request()->routeIs('contact') ? 'text-blue-500' : 'text-gray-900' }}">
+                        Contact Us
+                    </a>
+                </li>
             </ul>
+
 
             <!-- Right Section (Desktop) -->
             <div class="hidden xl:flex items-center space-x-5">
@@ -94,8 +111,7 @@
             @auth
                 <div class="font-medium">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-400">{{ Auth::user()->email }}</div>
-                <a href="{{ route('profile.edit') }}"
-                    class="block mt-3 px-3 py-2 rounded-md hover:bg-gray-700">Profile</a>
+                <a href="{{ route('profile.edit') }}" class="block mt-3 px-3 py-2 rounded-md hover:bg-gray-700">Profile</a>
                 <form method="POST" action="{{ route('logout') }}" class="mt-1">
                     @csrf
                     <button type="submit" class="block w-full text-left px-3 py-2 rounded-md hover:bg-gray-700">

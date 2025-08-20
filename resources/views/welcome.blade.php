@@ -34,7 +34,7 @@
 
         </section>
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex my-6 border-b-0">
+            <div class="flex mt-6 mb-12 border-b-0">
                 <button id="btn-apartment" class="w-1/2 px-6 py-2 font-semibold border-b-2 focus:outline-none"
                     onclick="showCategory('apartment')">Eksklusif</button>
                 <button id="btn-kost" class="w-1/2 px-6 py-2 font-semibold border-b-2 focus:outline-none"
@@ -56,7 +56,7 @@
 
 
                 <!-- Kost Category (hidden by default) -->
-                <div id="category-kost" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div id="category-kost" class="hidden grid mb-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($reguler as $unit)
                         <x-cards :title="$unit->name" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
                                             ? asset('storage/' . $unit->cover_image)
@@ -64,7 +64,7 @@
                             button-url="route('detail', $unit->slug)" />
                     @endforeach
                 </div>
-                <div class="flex items-center justify-center space-x-2 my-8">
+                <div class="flex mb-12 items-center justify-center space-x-2 my-8">
                     <!-- Teks kiri -->
                     <span class="text-gray-900">Explore More</span>
 
@@ -247,7 +247,7 @@
         <!-- Search Section Before Footer -->
         <section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
             <!-- Background image -->
-            <div class="relative rounded-2xl overflow-hidden">
+            <div class="relative rounded-2xl mb-12 overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
                     alt="Coliving and Apartment" class="absolute inset-0 w-full h-full object-cover" />
 
