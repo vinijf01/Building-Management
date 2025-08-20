@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="relative rounded-2xl overflow-hidden">
                 <!-- Background image full -->
@@ -41,7 +41,8 @@
                 </div>
             </div>
 
-
+        </section>
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex my-6 border-b-0">
                 <button id="btn-apartment" class="w-1/2 px-6 py-2 font-semibold border-b-2 focus:outline-none"
                     onclick="showCategory('apartment')">Eksklusif</button>
@@ -69,31 +70,35 @@
                     @endforeach
                 </div>
             </div>
-        </div>
 
-           <div class="">
-                    <div class="mt-8 mb-4">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                            Lorem Ipsum Best Deals for You ✈️
-                        </h2>
-                    </div>
-                    <div class="pb-8">
-                        <div class="swiper mySwiper">
-                            <div class="swiper-wrapper ">
-                                @foreach ($all as $unit)
-                                    <div
-                                        class="swiper-slide my-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                        <x-cards :title="$unit->title" :description="$unit->description" 
-                                            :price="$unit->price" :image-url="asset('storage/' . $unit->cover_image)" button-text="Book Now" :button-url="route('book.now', $unit->slug)" />
-                                    </div>
-                                @endforeach
+        </section>
+
+       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mt-8 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Lorem Ipsum Best Deals for You ✈️
+                </h2>
+            </div>
+            <div class="pb-8">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper ">
+                        @foreach ($all as $unit)
+                            <div
+                                class="swiper-slide my-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <x-cards :title="$unit->title" :description="$unit->description" 
+                                    :price="$unit->price" :image-url="asset('storage/' . $unit->cover_image)" button-text="Book Now" :button-url="route('book.now', $unit->slug)" />
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
-                        </div>
+                        @endforeach
                     </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
                 </div>
+            </div>
+       </section>
+            
+
+             
 
 
         <script>

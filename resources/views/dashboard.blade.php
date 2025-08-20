@@ -97,37 +97,37 @@
                 <!-- Apartment Category -->
                 <!-- Apartment Category -->
                 <div id="category-apartment" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    @foreach ([
-        (object)
-[
-            'title' => 'Modern City Apartment',
-            'description' => 'Spacious and modern 2-bedroom apartment in the city center.',
-            'price' => 1200,
-            'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
-        ],
-        (object) [
-            'title' => 'Cozy Studio Apartment',
-            'description' => 'Perfect for singles or couples, close to public transport.',
-            'price' => 800,
-            'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
-        ],
-        (object) [
-            'title' => 'Luxury Downtown Loft',
-            'description' => 'High ceilings and great city views with 3 bedrooms.',
-            'price' => 2500,
-            'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
-        ],
-        (object) [
-            'title' => 'Luxury Downtown Loft',
-            'description' => 'High ceilings and great city views with 3 bedrooms.',
-            'price' => 2500,
-            'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
-        ],
-    ] as $apartment)
-                        <x-cards :title="$apartment->title" :description="$apartment->description"  :price="$apartment->price"
-                            :image-url="$apartment->image_url" button-text="Book Now" />
-                    @endforeach
-                </div>
+                @foreach ([
+                (object)
+                [
+                    'title' => 'Modern City Apartment',
+                    'description' => 'Spacious and modern 2-bedroom apartment in the city center.',
+                    'price' => 1200,
+                    'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
+                ],
+                (object) [
+                    'title' => 'Cozy Studio Apartment',
+                    'description' => 'Perfect for singles or couples, close to public transport.',
+                    'price' => 800,
+                    'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
+                ],
+                (object) [
+                    'title' => 'Luxury Downtown Loft',
+                    'description' => 'High ceilings and great city views with 3 bedrooms.',
+                    'price' => 2500,
+                    'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
+                ],
+                (object) [
+                    'title' => 'Luxury Downtown Loft',
+                    'description' => 'High ceilings and great city views with 3 bedrooms.',
+                    'price' => 2500,
+                    'image_url' => 'https://images.unsplash.com/photo-1472220625704-91e1462799b2?auto=format&fit=crop&w=600&q=80',
+                ],
+                ] as $apartment)
+                    <x-cards :title="$apartment->title" :description="$apartment->description" :price="$apartment->price" :image-url="$apartment->image_url"
+                        button-text="Book Now" />
+                @endforeach
+            </div>
 
 
                 <!-- Kost Category (hidden by default) -->
@@ -159,8 +159,8 @@
             'image_url' => 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80',
         ],
     ] as $kost)
-                        <x-cards :title="$kost->title" :description="$kost->description" :price="$kost->price"
-                            :image-url="$kost->image_url" button-text="Book Now" />
+                        <x-cards :title="$kost->title" :description="$kost->description" :price="$kost->price" :image-url="$kost->image_url"
+                            button-text="Book Now" />
                     @endforeach
                 </div>
                 @php
@@ -235,7 +235,6 @@
                             'price' => 1300,
                             'image_url' =>
                                 'https://images.unsplash.com/photo-1599420186946-7b6a8e0c1b4c?auto=format&fit=crop&w=600&q=80',
-
                         ],
                     ]);
                 @endphp
@@ -252,8 +251,8 @@
                                 @foreach ($datas as $apartment)
                                     <div
                                         class="swiper-slide my-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                        <x-cards :title="$apartment->title" :description="$apartment->description" 
-                                            :price="$apartment->price" :image-url="$apartment->image_url" button-text="Book Now" />
+                                        <x-cards :title="$apartment->title" :description="$apartment->description" :price="$apartment->price"
+                                            :image-url="$apartment->image_url" button-text="Book Now" />
                                     </div>
                                 @endforeach
                             </div>
