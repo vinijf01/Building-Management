@@ -92,12 +92,19 @@
         <div class="flex justify-between h-16 items-center">
 
             <!-- Logo -->
-            <div class="flex-shrink-0 flex items-center">
-                <a href="{{ url('/') }}" class="text-3xl font-bold font-heading">
-                    Logo Here.
-                </a>
-            </div>
-
+            @auth
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{{ url('/dashboard') }}" class="text-3xl font-bold font-heading">
+                        Logo Here.
+                    </a>
+                </div>
+            @else
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{{ url('/') }}" class="text-3xl font-bold font-heading">
+                        Logo Here.
+                    </a>
+                </div>
+            @endauth
 
             <!-- Nav Links Desktop -->
             <ul class="hidden md:flex space-x-12 font-semibold">
@@ -133,11 +140,6 @@
 
                 <!-- Auth Section -->
                 @auth
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ url('/dashboard') }}" class="text-3xl font-bold font-heading">
-                            Logo Here.
-                        </a>
-                    </div>
                     <!-- Dropdown -->
                     <div x-data="{ dropdownOpen: false }" class="relative">
                         <button @click="dropdownOpen = !dropdownOpen"
