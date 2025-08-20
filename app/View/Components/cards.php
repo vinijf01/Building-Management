@@ -13,19 +13,19 @@ class cards extends Component
      */
     public $title;
     public $description;
-    public $bedrooms;
     public $price;
     public $imageUrl;
     public $buttonText;
+     public $buttonUrl;
 
-    public function __construct($title, $description, $bedrooms, $price, $imageUrl, $buttonText = 'Book Now')
+    public function __construct($title, $description,  $price, $imageUrl, $buttonText = 'Book Now', $buttonUrl)
     {
         $this->title = $title;
         $this->description = $description;
-        $this->bedrooms = $bedrooms;
         $this->price = $price;
         $this->imageUrl = $imageUrl;
         $this->buttonText = $buttonText;
+        $this->buttonUrl = $buttonUrl;
     }
 
 

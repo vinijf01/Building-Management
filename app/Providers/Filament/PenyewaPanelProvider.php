@@ -11,6 +11,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Widgets\Widget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -27,7 +28,7 @@ class PenyewaPanelProvider extends PanelProvider
             ->path('penyewa')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#5191FF',
             ])
             ->discoverResources(in: app_path('Filament/Penyewa/Resources'), for: 'App\\Filament\\Penyewa\\Resources')
             ->discoverPages(in: app_path('Filament/Penyewa/Pages'), for: 'App\\Filament\\Penyewa\\Pages')
@@ -36,8 +37,9 @@ class PenyewaPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Penyewa/Widgets'), for: 'App\\Filament\\Penyewa\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Penyewa\Widgets\PenyewaDashboardOverview::class,
+                 \App\Filament\Penyewa\Widgets\PenyewaIncomeChart::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,
