@@ -1,11 +1,30 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [UserController::class, 'beranda']);
+
+Route::get('/book/{slug}', function ($slug) {
+    if (!Auth::check()) {
+        return redirect()->route('login'); // belum login → ke login
+    }
+    // sudah login → arahkan ke booking detail berdasarkan slug
+    return redirect()->route('booking.show', $slug);
+})->name('book.now');
+
+Route::get('/booking/{slug}', [UserController::class, 'show'])->middleware('auth')->name('booking.show');
+
+
+
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

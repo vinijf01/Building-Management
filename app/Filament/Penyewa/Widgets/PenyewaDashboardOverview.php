@@ -35,7 +35,7 @@ class PenyewaDashboardOverview extends BaseWidget
         $bookingMenunggu = Bookings::whereHas('property', function ($q) use ($penyewaId) {
                 $q->where('penyewa_id', $penyewaId);
             })
-            ->where('status', 'pending')
+            ->where('status', 'pending_payment')
             ->count();
 
         // 4. Pembayaran Belum Diverifikasi

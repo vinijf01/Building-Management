@@ -24,7 +24,7 @@ class PropertiesSeeder extends Seeder
                 'slug' => Str::slug('Gedung Serbaguna A'),
                 'description' => 'Gedung cocok untuk seminar, workshop, dan pesta kecil.',
                 'cover_image' => null,
-                'category' => 'kos',
+                'category' => 'eksklusif',
                 'price' => 1000000,
             ]);
 
@@ -34,7 +34,7 @@ class PropertiesSeeder extends Seeder
                 'slug' => Str::slug('Ruang Meeting B'),
                 'description' => 'Ruang meeting dengan kapasitas 20 orang.',
                 'cover_image' => null,
-                'category' => 'apartemen',
+                'category' => 'reguler',
                 'price' => 250000,
             ]);
         }

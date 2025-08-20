@@ -50,8 +50,8 @@ class PropertiesResource extends Resource
                         Forms\Components\Select::make('category')
                             ->required()
                             ->options([
-                                'apartemen' => 'Apartemen',
-                                'kos' => 'Kos',
+                                'eksklusif' => 'Eksklusif',
+                                'reguler' => 'Reguler',
                             ]),
                         Forms\Components\TextInput::make('price')
                             ->required()
