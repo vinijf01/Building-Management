@@ -2,9 +2,9 @@
     <div class="pb-12 pt-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-breadcrumbs :links="[
-                ['label' => 'Home', 'url' => route('dashboard')],
+                ['label' => 'Home', 'url' => auth()->check() ? route('dashboard') : url('/')],
                 ['label' => 'Products', 'url' => route('products.list')],
-                ['label' => $product->title, 'url' => ''],
+                ['label' => $product->slug],
             ]" />
 
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 sm:p-8 lg:p-10">
@@ -58,8 +58,8 @@
                     <div class="swiper-wrapper mb-12">
                         @foreach ($relatedProducts as $unit)
                             <div class="swiper-slide">
-                                <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$property->cover_image
-                                            ? asset('storage/' . $property->cover_image)
+                                <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
+                                            ? asset('storage/' . $unit->cover_image)
                                             : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
                                     :button-url="route('detail', $unit->slug)" />
                             </div>

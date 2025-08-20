@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="pt-4 pb-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-breadcrumbs :links="[['label' => 'Home', 'url' => route('dashboard')], ['label' => 'Products', 'url' => '']]" />
+            <x-breadcrumbs :links="[['label' => 'Home', 'url' => auth()->check() ? route('dashboard') : url('/')], ['label' => 'Products', 'url' => '']]" />
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <section>
@@ -125,6 +125,19 @@
 
                             <!-- Product Grid -->
                             <div class="lg:col-span-3">
+                                <!-- Search Bar -->
+                                <div class="flex justify-end mb-6">
+                                    <form action="{{ route('products.list') }}" method="GET"
+                                        class="flex items-center w-full sm:w-1/3">
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            placeholder="Search products..."
+                                            class="w-full rounded-md border-gray-300 text-sm px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <button type="submit"
+                                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                                            Search
+                                        </button>
+                                    </form>
+                                </div>
                                 <div id="category-apartment"
                                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                     @forelse($all as $property)
