@@ -3,16 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
+use App\Models\Reviews;
+use App\Models\Bookings;
+use App\Models\Properties;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use App\Models\Properties;
-use App\Models\Bookings;
-use App\Models\Reviews;
-use Filament\Panel;
-use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -70,7 +72,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Reviews::class, 'customer_id');
     }
 
-public function canAccessPanel(Panel $panel): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         return match ($panel->getId()) {
             'admin' => $this->role === 'admin',
@@ -79,5 +81,34 @@ public function canAccessPanel(Panel $panel): bool
         };
     }
 
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar? asset('storage/' . $this->avatar) : null;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Hapus file kalau record dihapus
+        static::deleting(function ($image) {
+            if ($image->avatar && Storage::disk('public')->exists($image->avatar)) {
+                Storage::disk('public')->delete($image->avatar);
+            }
+        });
+
+        // Hapus file lama kalau update gambar
+        static::updating(function ($image) {
+            if ($image->isDirty('avatar')) { // Cek kalau avatar berubah
+                $oldPath = $image->getOriginal('avatar');
+                if ($oldPath && Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+        });
+    }
+
 
 }
+
+
