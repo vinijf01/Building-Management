@@ -111,7 +111,7 @@ class SchedulesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSchedules::route('/'),
+            'index' => Pages\ListSchedules::route('home'),
             // 'edit'  => Pages\EditSchedules::route('/{record}/edit'),
         ];
     }

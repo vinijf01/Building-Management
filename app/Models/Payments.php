@@ -14,16 +14,19 @@ class Payments extends Model
 
     protected $casts = [
         'payment_due_date' => 'datetime',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
 
-    public function booking(){
+    public function booking()
+    {
         return $this->belongsTo(Bookings::class);
     }
 
     public function getProofImageUrlAttribute(): ?string
-{
-    return $this->proof_image ? asset('storage/' . $this->proof_image) : null;
-}
+    {
+        return $this->proof_image ? asset('storage/' . $this->proof_image) : null;
+    }
 
 
     protected static function boot()

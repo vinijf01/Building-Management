@@ -2,7 +2,7 @@
     <div class="pb-12 pt-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-breadcrumbs :links="[
-                ['label' => 'Home', 'url' => auth()->check() ? route('dashboard') : url('/')],
+                ['label' => 'Home', 'url' => route('home')],
                 ['label' => 'Products', 'url' => route('products.list')],
                 ['label' => $product->slug],
             ]" />
@@ -37,7 +37,7 @@
                             </p>
                             <!-- Kalau user sudah login -->
                             @auth
-                                <a href="#" id="book-now" @click.prevent="$store.auth.openLogin = true"
+                                <a href="{{ route('booking.form', ['slug' => $product->slug]) }}" id="book-now" @click.prevent="$store.auth.openLogin = true"
                                     class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
                                     Book Now
                                 </a>
