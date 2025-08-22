@@ -35,7 +35,7 @@ class PenyewaDashboardOverview extends BaseWidget
         $bookingMenunggu = Bookings::whereHas('property', function ($q) use ($penyewaId) {
                 $q->where('penyewa_id', $penyewaId);
             })
-            ->where('status', 'pending')
+            ->where('status', 'pending_payment')
             ->count();
 
         // 4. Pembayaran Belum Diverifikasi
@@ -136,6 +136,7 @@ class PenyewaIncomeChart extends ChartWidget
                     'data' => $data,
                     'backgroundColor' => 'rgba(79, 70, 229, 0.6)',
                     'borderColor' => 'rgba(79, 70, 229, 1)',
+                    'tension' => 0.3,
                     'fill' => true,
                 ],
             ],

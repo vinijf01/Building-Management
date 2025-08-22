@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Bookings;
-use App\Models\Properties;
 use App\Models\Schedules;
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Bookings;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class ScheduleSeeder extends Seeder
 {
@@ -16,16 +14,19 @@ class ScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        $property = Properties::first();
-        $booking = Bookings::first();
-    if ($property && $booking) {
-        Schedules::create([
-            'property_id' => $property->id,
-            'booking_id'  => $booking->id,
-            'start_date' => Carbon::now()->addDays(1)->toDateString(), // hanya tanggal
-            'end_date' => Carbon::now()->addDays(1)->addHours(4)->toDateString(), // hanya tanggal
-            'status' => 'booked'
-        ]);
-    }
+        $bookings = Bookings::all();
+
+        foreach ($bookings as $index => $booking) {
+            $startDate = Carbon::parse($booking->start_date)->addHours(9); // mulai jam 09:00
+            $endDate   = $startDate->copy()->addHours(4); // durasi 4 jam
+
+            Schedules::create([
+                'property_id' => $booking->property_id,
+                'booking_id'  => $booking->id,
+                'start_date'  => $startDate->toDateTimeString(),
+                'end_date'    => $endDate->toDateTimeString(),
+                'status'      => 'booked',
+            ]);
+        }
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('cover_image')->nullable();
-            $table->enum('category',['apartemen', 'kos']);
+            $table->enum('category',['reguler', 'eksklusif']);
             $table->decimal('price', 12,2);
             $table->timestamps();
         });

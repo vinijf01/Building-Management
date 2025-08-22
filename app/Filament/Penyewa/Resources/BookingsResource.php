@@ -20,12 +20,15 @@ class BookingsResource extends Resource
     protected static ?string $navigationGroup = 'Transactions';
     public static function getNavigationBadge(): ?string
     {
-        // Hanya hitung booking dengan status 'pending_payment'
-        $count = Bookings::where('status', 'pending_payment')->count();
+        // Hitung booking dengan status 'pending_payment' dan milik properti penyewa yang login
+        $count = Bookings::where('status', 'pending_payment')
+            ->whereHas('property', function ($query) {
+                $query->where('penyewa_id', Auth::id());
+            })
+            ->count();
+
         return $count > 0 ? (string) $count : null;
     }
-
-   
 
     // Hanya tampilkan booking milik penyewa yang login
     public static function getEloquentQuery(): Builder

@@ -21,9 +21,15 @@ class Bookings extends Model
     return $this->hasOne(Payments::class, 'booking_id', 'id');
 }
 
-    public function schedule(){
-        return $this->hasOne(Schedules::class, 'booking_id');
-    }
+    // public function schedule(){
+    //     return $this->hasOne(Schedules::class, 'booking_id');
+    // }
+
+    public function schedules()
+{
+    return $this->hasMany(\App\Models\Schedules::class, 'booking_id');
+}
+
 
     public function review(){
         return $this->hasOne(Reviews::class);

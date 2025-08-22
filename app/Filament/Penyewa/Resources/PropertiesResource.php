@@ -22,6 +22,16 @@ class PropertiesResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'Properties';
+    
+    public static function getEloquentQuery(): Builder
+    {
+        // Ambil query default
+        $query = parent::getEloquentQuery();
+
+        // Filter hanya data penyewa yang login
+        return $query->where('penyewa_id', Auth::id());
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -50,8 +60,8 @@ class PropertiesResource extends Resource
                         Forms\Components\Select::make('category')
                             ->required()
                             ->options([
-                                'apartemen' => 'Apartemen',
-                                'kos' => 'Kos',
+                                'eksklusif' => 'Eksklusif',
+                                'reguler' => 'Reguler',
                             ]),
                         Forms\Components\TextInput::make('price')
                             ->required()
