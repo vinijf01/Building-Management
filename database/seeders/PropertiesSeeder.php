@@ -29,18 +29,6 @@ class PropertiesSeeder extends Seeder
                 ['Ruang Komputer I', 'Ruang dengan fasilitas komputer lengkap.', 'reguler', 550000],
                 ['Gedung Konser J', 'Gedung besar untuk konser dan pertunjukan musik.', 'eksklusif', 5000000],
             ];
-
-            foreach ($properties as [$name, $description, $category, $price]) {
-                Properties::create([
-                    'penyewa_id' => $penyewa->id,
-                    'name' => $name,
-                    'slug' => Str::slug($name),
-                    'description' => $description,
-                    'cover_image' => null,
-                    'category' => $category,
-                    'price' => $price,
-                ]);
-            }
         }
     }
 }

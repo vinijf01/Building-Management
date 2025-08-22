@@ -11,16 +11,26 @@ Route::get('/dashboard', [UserController::class, 'beranda'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/detail/{slug}', function ($slug) {
-    if (!Auth::check()) {
-        return redirect()->route('login'); // belum login → ke login
-    }
-    // sudah login → arahkan ke booking detail berdasarkan slug
-    return redirect()->route('booking.show', $slug);
-})->name('book.now');
+Route::get('/contact-us', function () {
+    return view('contact-us'); // ganti 'nama_view' dengan nama file blade
+});
+Route::get('/booking', function () {
+    return view('BookingForm'); // ganti 'nama_view' dengan nama file blade
+});
 
-Route::get('/booking/{slug}', [UserController::class, 'show'])->middleware('auth')->name('booking.show');
+Route::get('/detail/{slug}', [UserController::class, 'show'])
+    ->name('detail');
 
+
+// Route::get('/detail/{slug}', function ($slug) {
+//     if (!Auth::check()) {
+//         return redirect()->route('login'); // belum login → ke login
+//     }
+//     // sudah login → arahkan ke booking detail berdasarkan slug
+//     return redirect()->route('detail.show', $slug);
+// })->name('detail');
+
+// Route::get('/detail/{slug}', [UserController::class, 'show'])->middleware('auth')->name('detail.show');
 
 
 Route::get('/products', [UserController::class, 'collection'])->name('products.list');

@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="pt-4 pb-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-breadcrumbs :links="[['label' => 'Home', 'url' => route('dashboard')], ['label' => 'Products', 'url' => '']]" />
+            <x-breadcrumbs :links="[['label' => 'Home', 'url' => auth()->check() ? route('dashboard') : url('/')], ['label' => 'Products', 'url' => '']]" />
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <section>
@@ -100,13 +100,13 @@
                                         <div class="border-t border-gray-200 bg-white p-4">
                                             <div class="flex justify-between gap-4">
                                                 <label for="price-from" class="flex items-center gap-2 w-full">
-                                                    <span class="text-sm text-gray-600">$</span>
+                                                    <span class="text-sm text-gray-600">Rp. </span>
                                                     <input type="number" id="price-from" name="price_from"
                                                         placeholder="From" value="{{ request('price_from') }}"
                                                         class="w-full rounded-md border-gray-200 shadow-xs sm:text-sm">
                                                 </label>
                                                 <label for="price-to" class="flex items-center gap-2 w-full">
-                                                    <span class="text-sm text-gray-600">$</span>
+                                                    <span class="text-sm text-gray-600">Rp. </span>
                                                     <input type="number" id="price-to" name="price_to"
                                                         placeholder="To" value="{{ request('price_to') }}"
                                                         class="w-full rounded-md border-gray-200 shadow-xs sm:text-sm">
@@ -125,35 +125,98 @@
 
                             <!-- Product Grid -->
                             <div class="lg:col-span-3">
+                                <!-- Search Bar -->
+                                <div class="flex justify-end mb-6">
+                                    <form action="{{ route('products.list') }}" method="GET"
+                                        class="flex items-center w-full sm:w-1/3">
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            placeholder="Search products..."
+                                            class="w-full rounded-md border-gray-300 text-sm px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                        <button type="submit"
+                                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+                                            Search
+                                        </button>
+                                    </form>
+                                </div>
                                 <div id="category-apartment"
                                     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                     @forelse($all as $property)
-                                        <div
-                                            class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                                            <div class="relative h-48">
-                                                <img src="{{ asset('storage/' . $property->cover_image) }}"
-                                                    alt="{{ $property->name }}" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="p-5">
-                                                <h3 class="text-xl font-semibold mb-2">{{ $property->name }}</h3>
-                                                <p class="text-gray-600 mb-3 line-clamp-2">{{ $property->description }}
-                                                </p>
-                                                <div class="flex justify-between items-center mb-4">
-                                                    <span class="text-gray-800 font-medium">Price:
-                                                    </span>
-                                                    <span
-                                                        class="text-blue-600 font-bold text-lg">${{ number_format($property->price, 2) }}</span>
-                                                </div>
-                                                <a href="{{ route('booking.show', $property->slug) }}"
-                                                    class="w-full block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition duration-200">
-                                                    Book Now
-                                                </a>
-                                            </div>
-                                        </div>
+                                        <x-cards :title="$property->name" :description="$property->description" :price="$property->price" :image-url="$property->cover_image
+                                            ? asset('storage/' . $property->cover_image)
+                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+                                            :button-url="route('detail', $property->slug)" />
+
                                     @empty
                                         <p class="text-gray-500 col-span-3">Tidak ada properti ditemukan.</p>
                                     @endforelse
                                 </div>
+                                <div class="mt-8 w-full flex justify-end"> {{-- flex justify-end -> kanan --}}
+                                    <nav class="inline-flex items-center space-x-1" aria-label="Pagination">
+
+                                        {{-- Previous Page --}}
+                                        @if ($all->onFirstPage())
+                                            <span
+                                                class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md">Prev</span>
+                                        @else
+                                            <a href="{{ $all->previousPageUrl() }}"
+                                                class="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md">
+                                                Prev
+                                            </a>
+                                        @endif
+
+                                        {{-- Page Numbers with Ellipsis --}}
+                                        @php
+                                            $current = $all->currentPage();
+                                            $last = $all->lastPage();
+                                            $start = max(1, $current - 2);
+                                            $end = min($last, $current + 2);
+                                        @endphp
+
+                                        {{-- Always show first page --}}
+                                        @if ($start > 1)
+                                            <a href="{{ $all->url(1) }}"
+                                                class="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md">1</a>
+                                            @if ($start > 2)
+                                                <span class="px-3 py-2 text-sm text-gray-500">...</span>
+                                            @endif
+                                        @endif
+
+                                        {{-- Dynamic page range --}}
+                                        @for ($i = $start; $i <= $end; $i++)
+                                            @if ($i == $current)
+                                                <span
+                                                    class="px-3 py-2 text-sm bg-blue-500 text-white border border-blue-500 rounded-md">{{ $i }}</span>
+                                            @else
+                                                <a href="{{ $all->url($i) }}"
+                                                    class="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md">
+                                                    {{ $i }}
+                                                </a>
+                                            @endif
+                                        @endfor
+
+                                        {{-- Always show last page --}}
+                                        @if ($end < $last)
+                                            @if ($end < $last - 1)
+                                                <span class="px-3 py-2 text-sm text-gray-500">...</span>
+                                            @endif
+                                            <a href="{{ $all->url($last) }}"
+                                                class="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md">{{ $last }}</a>
+                                        @endif
+
+                                        {{-- Next Page --}}
+                                        @if ($all->hasMorePages())
+                                            <a href="{{ $all->nextPageUrl() }}"
+                                                class="px-3 py-2 text-sm bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md">
+                                                Next
+                                            </a>
+                                        @else
+                                            <span
+                                                class="px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-md">Next</span>
+                                        @endif
+
+                                    </nav>
+                                </div>
+
                             </div>
                         </div>
                     </div>

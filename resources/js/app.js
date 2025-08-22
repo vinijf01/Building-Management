@@ -6,9 +6,31 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 
 
+
 window.Alpine = Alpine;
 
+document.addEventListener("alpine:init", () => {
+    Alpine.store("auth", {
+        openLogin: false,
+        openRegister: false,
+    });
+});
+
 Alpine.start();
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     const bookBtn = document.getElementById("book-now");
+//     const loginModal = document.getElementById("login-modal");
+
+//     if (bookBtn && loginModal) {
+//         bookBtn.addEventListener("click", function (e) {
+//             if (!window.isLoggedIn) {  // ini bisa di-passing dari blade
+//                 e.preventDefault();
+//                 loginModal.classList.remove("hidden");
+//             }
+//         });
+//     }
+// });
 
 document.addEventListener('DOMContentLoaded', () => {
     const swiper = new Swiper('.mySwiper', {
