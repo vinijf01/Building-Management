@@ -34,7 +34,7 @@ class BookingSeeder extends Seeder
                 ]);
 
                 // sekaligus buat schedule dengan status booked
-                $booking->schedules()->create([
+                $booking->schedule()->create([
                     'property_id' => $property->id,
                     'start_date'  => $startDate->toDateString(),
                     'end_date'    => $endDate->toDateString(),

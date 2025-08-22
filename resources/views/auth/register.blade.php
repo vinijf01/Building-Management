@@ -58,7 +58,7 @@
         
         <h2 class="text-2xl font-semibold mb-4">Register</h2>
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="#">
             @csrf
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium">Name</label>

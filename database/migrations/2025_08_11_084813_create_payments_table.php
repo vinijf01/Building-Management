@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('payment_type', ['dp', 'full']);
             $table->enum('payment_status', ['pending_verification', 'verified','rejected','cancelled'])->default('pending_verification');
             $table->decimal('amount',12,2);
+            $table->text('remark')->nullable();     
             $table->string('proof_image')->nullable();
             $table->datetime('payment_due_date')->nullable();
             $table->timestamps();
