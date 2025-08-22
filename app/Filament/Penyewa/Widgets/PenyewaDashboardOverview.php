@@ -136,6 +136,7 @@ class PenyewaIncomeChart extends ChartWidget
                     'data' => $data,
                     'backgroundColor' => 'rgba(79, 70, 229, 0.6)',
                     'borderColor' => 'rgba(79, 70, 229, 1)',
+                    'tension' => 0.3,
                     'fill' => true,
                 ],
             ],

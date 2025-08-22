@@ -5,13 +5,13 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', [UserController::class, 'beranda']);
+Route::get('/dashboard', [UserController::class, 'beranda'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-Route::get('/book/{slug}', function ($slug) {
+Route::get('/detail/{slug}', function ($slug) {
     if (!Auth::check()) {
         return redirect()->route('login'); // belum login → ke login
     }
@@ -21,9 +21,7 @@ Route::get('/book/{slug}', function ($slug) {
 
 Route::get('/booking/{slug}', [UserController::class, 'show'])->middleware('auth')->name('booking.show');
 
-Route::get('/dashboard', [UserController::class, 'beranda'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+
 
 Route::get('/products', [UserController::class, 'collection'])->name('products.list');
 

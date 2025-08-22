@@ -75,7 +75,7 @@
                                                         <input type="radio" name="room_type" value="eksklusif"
                                                             class="size-5 rounded-sm border-gray-300 shadow-sm"
                                                             {{ request('room_type') == 'eksklusif' ? 'checked' : '' }}>
-                                                        <span class="text-sm font-medium text-gray-700">Rksklusif</span>
+                                                        <span class="text-sm font-medium text-gray-700">Eksklusif</span>
                                                     </label>
                                                 </li>
                                             </ul>
