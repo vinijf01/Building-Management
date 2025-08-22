@@ -163,7 +163,7 @@ class PaymentsResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPayments::route('/'),
+            'index' => Pages\ListPayments::route('home'),
             // 'view'  => Pages\ViewPayments::route('/{record}/view')
             // 'create' => Pages\CreatePayments::route('/create'),
             // 'edit' => Pages\EditPayments::route('/{record}/edit'),

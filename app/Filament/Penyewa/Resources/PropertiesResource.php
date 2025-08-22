@@ -133,7 +133,7 @@ class PropertiesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProperties::route('/'),
+            'index' => Pages\ListProperties::route('home'),
             'create' => Pages\CreateProperties::route('/create'),
             'edit' => Pages\EditProperties::route('/{record}/edit'),
         ];

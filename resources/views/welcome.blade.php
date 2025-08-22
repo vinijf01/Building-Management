@@ -261,7 +261,7 @@
                     </h2>
 
                     <!-- Search Bar -->
-                    <form action="#" method="GET" class="w-full max-w-lg">
+                    <form action="{{ route('products.list') }}" method="GET" class="w-full max-w-lg">
                         <div class="flex bg-white rounded-lg overflow-hidden shadow-lg">
                             <input type="text" name="q"
                                 placeholder="Search by location, property, or keyword..."

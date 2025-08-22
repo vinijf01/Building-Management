@@ -85,7 +85,7 @@ class PropertyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProperties::route('/'),
+            'index' => Pages\ListProperties::route('home'),
             // 'create' => Pages\CreateProperty::route('/create'),
             // 'view' => Pages\ViewProperty::route('/{record}'),
             // 'edit' => Pages\EditProperty::route('/{record}/edit'),

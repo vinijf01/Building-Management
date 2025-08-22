@@ -123,7 +123,7 @@ class PropertyImagesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPropertyImages::route('/'),
+            'index' => Pages\ListPropertyImages::route('home'),
             'create' => Pages\CreatePropertyImages::route('/create'),
             'edit' => Pages\EditPropertyImages::route('/{record}/edit'),
         ];

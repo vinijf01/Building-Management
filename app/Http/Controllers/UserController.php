@@ -28,6 +28,14 @@ class UserController extends Controller
     {
         $query = Properties::query();
 
+        if ($request->search) {
+            $search = strtolower($request->search);
+            $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
+                ->orWhereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
+                ->orWhereRaw('LOWER(category) LIKE ?', ["%{$search}%"]);
+            });
+        }
         if ($request->room_type) {
             $query->where('category', $request->room_type);
         }
