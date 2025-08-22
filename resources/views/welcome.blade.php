@@ -88,7 +88,7 @@
         <section class="max-w-7xl mt-24 mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-                    Lorem Ipsum Best Deals for You ✈️
+                    Best Deals for You
                 </h2>
             </div>
             <div class="pb-4">
@@ -229,7 +229,7 @@
             </div>
             <div class="flex items-center justify-center space-x-2 my-8">
                 <!-- Teks kiri -->
-                <span class="text-gray-900">Explore More</span>
+                <span class="text-gray-900">Discover More</span>
 
                 <!-- Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -239,7 +239,7 @@
 
                 <!-- Link kanan -->
                 <a href="#" class="font-semibold underline text-gray-900 hover:text-indigo-600">
-                    View Collection
+                    View FAQ
                 </a>
             </div>
         </section>

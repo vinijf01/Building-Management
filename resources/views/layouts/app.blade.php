@@ -33,5 +33,6 @@
             </main>
             @include('layouts.footer')
         </div>
+    <x-auth-modal />
     </body>
 </html>
