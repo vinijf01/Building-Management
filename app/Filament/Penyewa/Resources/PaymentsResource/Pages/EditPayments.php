@@ -25,6 +25,10 @@ class EditPayments extends EditRecord
         }
 
         if ($payment->payment_status === 'rejected' && $payment->booking) {
+            $payment->booking->update(['status' => 'pending_payment']);
+        }
+
+        if ($payment->payment_status === 'cancelled' && $payment->booking) {
             $payment->booking->update(['status' => 'cancelled']);
             $payment->booking->schedule()->delete();
         }

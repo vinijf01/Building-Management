@@ -28,8 +28,13 @@ class EditBookings extends EditRecord
                 $this->record->update(['status' => 'confirmed']);
             }
 
-            if ($data['payment_status'] === 'rejected') {
+             if ($data['payment_status'] === 'rejected') {
                 $payment->update(['payment_status' => 'rejected']);
+                $this->record->update(['status' => 'pending_payment']);
+            }
+
+            if ($data['payment_status'] === 'cancelled') {
+                $payment->update(['payment_status' => 'cancelled']);
                 $this->record->update(['status' => 'cancelled']);
                 $this->record->schedule()->delete();
             }

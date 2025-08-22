@@ -14,7 +14,7 @@ Route::get('/dashboard', [UserController::class, 'beranda'])
 
 Route::get('/contact-us', function () {
     return view('contact-us'); // ganti 'nama_view' dengan nama file blade
-});
+})->name('contact-us');
 
 Route::get('/booking', function () {
     return view('BookingForm'); // ganti 'nama_view' dengan nama file blade

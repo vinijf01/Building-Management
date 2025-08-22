@@ -70,13 +70,21 @@ class BookingsResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('payment_status')
                             ->options([
-                                'pending_verification' => 'Pending Verification',
-                                'verified'             => 'Verified',
-                                'rejected'             => 'Rejected',
-                            ]),
+                                'verified'  => 'Verified',
+                                'rejected'  => 'Rejected',
+                                'cancelled' => 'Cancelled',
+                            ])
+                            ->reactive(), // penting agar perubahan langsung bereaksi
+                        Forms\Components\TextInput::make('payment.remark')
+                            ->label('Remark')
+                            ->visible(fn(callable $get) => in_array($get('payment_status'), ['rejected', 'cancelled']))
+                            ->required(fn(callable $get) => in_array($get('payment_status'), ['rejected', 'cancelled'])),
                         Forms\Components\FileUpload::make('payment.proof_image')
-                            ->image()->disabled()->label('Proof Image'),
+                            ->image()
+                            ->disabled()
+                            ->label('Proof Image'),
                     ])
+
             ]);
     }
 

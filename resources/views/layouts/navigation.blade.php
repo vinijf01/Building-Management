@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="{{ route('contact-us') }}"
                         class="hover:text-blue-500 {{ request()->routeIs('contact') ? 'text-blue-500' : 'text-gray-900' }}">
                         Contact Us
                     </a>

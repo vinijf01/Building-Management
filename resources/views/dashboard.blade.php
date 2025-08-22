@@ -88,7 +88,7 @@
                                     <div
                                         class="swiper-slide my-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         <x-cards :title="$unit->title" :description="$unit->description" 
-                                            :price="$unit->price" :image-url="asset('storage/' . $unit->cover_image)" button-text="Book Now" :button-url="route('book.now', $unit->slug)" />
+                                            :price="$unit->price" :image-url="asset('storage/' . $unit->cover_image)" button-text="Book Now" :button-url="route('detail', $unit->slug)" />
                                     </div>
                                 @endforeach
                             </div>
