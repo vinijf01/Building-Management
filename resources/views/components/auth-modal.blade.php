@@ -62,7 +62,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="name" class="block text-sm font-medium">Phone Number</label>
+                        <label for="phone_number" class="block text-sm font-medium">Phone Number</label>
                         <input id="phone_number" name="phone_number" type="text" required
                             class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
                     </div>

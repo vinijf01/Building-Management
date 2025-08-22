@@ -6,7 +6,7 @@ use App\Models\Payments;
 use App\Models\Properties;
 use App\Models\Bookings;
 use App\Models\Schedules;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
