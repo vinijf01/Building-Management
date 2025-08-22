@@ -1,5 +1,5 @@
 <!-- NAV -->
-<nav class="sticky top-0 z-50 bg-white text-gray-900 border-b border-gray-200">
+<nav x-data class="sticky top-0 z-50 bg-white text-gray-900 border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
 
@@ -83,9 +83,6 @@
                             class="hover:text-gray-300">Login</button>
                         <button @click="$store.auth.openRegister = true; $store.auth.openLogin = false"
                             class="hover:text-gray-300">Register</button>
-                        <button @click="$store.auth.openLogin = true" class="bg-red-500 text-white px-4 py-2">Test
-                            Modal</button>
-
                     </div>
 
                 @endauth

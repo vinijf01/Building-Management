@@ -37,18 +37,17 @@
                             </p>
                             <!-- Kalau user sudah login -->
                             @auth
-                                <a href="#"
-                                    class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
-                                    Book Now
-                                </a>
-                            @endauth
-
-                            <!-- Kalau user belum login -->
-                            @guest
                                 <a href="#" id="book-now" @click.prevent="$store.auth.openLogin = true"
                                     class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
                                     Book Now
                                 </a>
+                            @endauth
+                            <!-- Kalau user belum login -->
+                            @guest
+                                <button x-data @click="$store.auth.openLogin = true; $store.auth.openRegister = false"
+                                    class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
+                                    Book Now
+                                </button>
                             @endguest
                             {{-- <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-lg shadow transition duration-200">
                                 Consult with Us

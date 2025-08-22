@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="my-12 py-20 bg-gray-100 bg-opacity-50 min-h-screen">
+    <section class="py-12 bg-gray-100 bg-opacity-50 min-h-screen">
         <div class="mx-auto container max-w-2xl md:w-3/4 shadow-md rounded-md">
             <div class="bg-gray-900 p-4 rounded-t text-white">
                 <h1 class="text-lg font-semibold">Booking Form</h1>
