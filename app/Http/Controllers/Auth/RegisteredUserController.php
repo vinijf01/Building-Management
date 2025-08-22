@@ -31,12 +31,21 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone_number' => [
+                'required',
+                'string',
+                'regex:/^[0-9]{10,15}$/', // hanya angka, min 10 digit, max 15 digit
+            ],
         ]);
+
+
+        // dd($request->all());
 
         $user = User::create([
             'name' => $request->name,
+            'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

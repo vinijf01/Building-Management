@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', [UserController::class, 'beranda']);
+
 Route::get('/dashboard', [UserController::class, 'beranda'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -14,6 +15,7 @@ Route::get('/dashboard', [UserController::class, 'beranda'])
 Route::get('/contact-us', function () {
     return view('contact-us'); // ganti 'nama_view' dengan nama file blade
 });
+
 Route::get('/booking', function () {
     return view('BookingForm'); // ganti 'nama_view' dengan nama file blade
 });
