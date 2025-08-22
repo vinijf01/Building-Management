@@ -13,9 +13,9 @@ Route::get('/', [UserController::class, 'beranda'])->name('home');
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');
 
-Route::get('/transactionHistory', function () {
+Route::get('/transaction-history', function () {
     return view('transactionHistory'); // ganti 'nama_view' dengan nama file blade
-});
+})->name('transactionHistory');
 
 Route::get('/contact-us', function () {
     return view('contact-us'); // ganti 'nama_view' dengan nama file blade
@@ -27,18 +27,6 @@ Route::get('/booking', function () {
 
 Route::get('/detail/{slug}', [UserController::class, 'show'])
     ->name('detail');
-
-
-// Route::get('/detail/{slug}', function ($slug) {
-//     if (!Auth::check()) {
-//         return redirect()->route('login'); // belum login → ke login
-//     }
-//     // sudah login → arahkan ke booking detail berdasarkan slug
-//     return redirect()->route('detail.show', $slug);
-// })->name('detail');
-
-// Route::get('/detail/{slug}', [UserController::class, 'show'])->middleware('auth')->name('detail.show');
-
 
 Route::get('/products', [UserController::class, 'collection'])->name('products.list');
 
