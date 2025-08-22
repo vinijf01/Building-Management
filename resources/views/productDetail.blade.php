@@ -37,7 +37,7 @@
                             </p>
                             <!-- Kalau user sudah login -->
                             @auth
-                                <a href="#" id="book-now" @click.prevent="$store.auth.openLogin = true"
+                                <a href="{{ route('booking.form', ['slug' => $product->slug]) }}" id="book-now" @click.prevent="$store.auth.openLogin = true"
                                     class="w-full block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition duration-200 mb-4">
                                     Book Now
                                 </a>

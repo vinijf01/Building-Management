@@ -5,7 +5,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', [UserController::class, 'beranda']);
+Route::get('/', [UserController::class, 'beranda'])->name('home');
+
 // Booking routes
 Route::middleware('auth')
     ->prefix('booking')
@@ -29,9 +30,9 @@ Route::get('/contact-us', function () {
     return view('contact-us'); // ganti 'nama_view' dengan nama file blade
 });
 
-Route::get('/booking', function () {
-    return view('BookingForm'); // ganti 'nama_view' dengan nama file blade
-});
+// Route::get('/booking', function () {
+//     return view('BookingForm'); // ganti 'nama_view' dengan nama file blade
+// });
 
 Route::get('/detail/{slug}', [UserController::class, 'show'])
     ->name('detail');
