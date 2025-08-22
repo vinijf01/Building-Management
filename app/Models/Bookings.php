@@ -11,15 +11,24 @@ class Bookings extends Model
 
     protected $fillable = ['property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price'];
 
-    public function property(){ return $this->belongsTo(Properties::class);}
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 
-    public function customer(){
+    public function property()
+    {
+        return $this->belongsTo(Properties::class);
+    }
+
+    public function customer()
+    {
         return $this->belongsTo(User::class, 'customer_id');
     }
-   public function payment()
-{
-    return $this->hasOne(Payments::class, 'booking_id', 'id');
-}
+    public function payment()
+    {
+        return $this->hasOne(Payments::class, 'booking_id', 'id');
+    }
 
     // public function schedule(){
     //     return $this->hasOne(Schedules::class, 'booking_id');
@@ -31,7 +40,8 @@ class Bookings extends Model
 }
 
 
-    public function review(){
+    public function review()
+    {
         return $this->hasOne(Reviews::class);
     }
 }

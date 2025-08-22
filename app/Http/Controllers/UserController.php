@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payments;
 use App\Models\Properties;
+use App\Models\Bookings;
+use App\Models\Schedules;
+use DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,49 +22,164 @@ class UserController extends Controller
         return view('welcome', compact('eksklusif', 'reguler', 'all'));
     }
 
-    public function show($slug)
+    public function bookingForm($slug)
     {
-        $product = Properties::where('slug', $slug)->firstOrFail();
-        $relatedProducts = Properties::where('slug', '!=', $slug)->take(10)->get();
+        $product = \App\Models\Properties::where('slug', $slug)->firstOrFail();
 
-        return view('productDetail', compact('product', 'relatedProducts'));
+        // get all blocked date ranges for this property
+        $blockedRanges = Bookings::where('property_id', $product->id)
+            ->whereIn('status', ['confirmed', 'pending_payment'])
+            ->get(['start_date', 'end_date'])
+            ->map(function ($b) {
+                return [
+                    'start' => \Carbon\Carbon::parse($b->start_date)->toDateString(), // YYYY-MM-DD
+                    'end' => \Carbon\Carbon::parse($b->end_date)->toDateString(),
+                ];
+            });
+
+        return view('bookingForm', compact('product', 'blockedRanges'));
     }
 
-    public function collection(Request $request)
+    public function bookingSave(string $slug, Request $request)
     {
-        $query = Properties::query();
+        // 1) Find the property by slug
+        $property = Properties::where('slug', $slug)->firstOrFail();
 
-        if ($request->search) {
-            $search = strtolower($request->search);
-            $query->where(function($q) use ($search) {
-                $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(category) LIKE ?', ["%{$search}%"]);
-            });
+        // 2) Validate incoming dates
+        $validated = $request->validate([
+            'start_date' => ['required', 'date', 'after_or_equal:today'],
+            'end_date' => ['required', 'date', 'after:start_date'], // end must be after start (at least next day)
+        ], [
+            'start_date.after_or_equal' => 'Start date cannot be before today.',
+            'end_date.after' => 'End date must be at least the next day.',
+        ]);
+
+        // 3) Normalize to day boundaries:
+        //    Treat end as checkout (exclusive); both stored as dates/datetimes.
+        $start = Carbon::parse($validated['start_date'])->startOfDay();  // inclusive
+        $end = Carbon::parse($validated['end_date'])->startOfDay();    // exclusive
+
+        // 4) Calculate nights & total (server-side, do not trust client)
+        $nights = $start->diffInDays($end); // e.g., 29->30 = 1 night
+        if ($nights < 1) {
+            return back()
+                ->withErrors(['date_range' => 'End date must be at least the next day.'])
+                ->withInput();
         }
-        if ($request->room_type) {
-            $query->where('category', $request->room_type);
+        $total = $nights * (float) $property->price;
+
+        // 5) Overlap check (half-open ranges): existing.start < new.end AND existing.end > new.start
+        $overlapExists = Bookings::where('property_id', $property->id)
+            ->whereIn('status', ['success_payment', 'pending_payment'])
+            ->where(function ($q) use ($start, $end) {
+                $q->where('start_date', '<', $end)
+                    ->where('end_date', '>', $start);
+            })
+            ->exists();
+
+        if ($overlapExists) {
+            return back()
+                ->withErrors(['date_range' => 'Selected dates overlap with an existing booking.'])
+                ->withInput();
         }
 
-        if ($request->price_from) {
-            $query->where('price', '>=', $request->price_from);
+        // 6) Transaction: create booking, schedule, payment
+        $booking = DB::transaction(function () use ($property, $start, $end, $total) {
+            // a) bookings
+            $booking = Bookings::create([
+                'property_id' => $property->id,
+                'customer_id' => Auth::id(),
+                'start_date' => $start,  // inclusive
+                'end_date' => $end,    // exclusive (checkout)
+                'status' => 'pending_payment',
+                'total_price' => $total,
+            ]);
+
+            // b) schedules
+            Schedules::create([
+                'property_id' => $property->id,
+                'booking_id' => $booking->id,
+                'start_date' => $start,  // inclusive
+                'end_date' => $end,    // exclusive
+                'status' => 'booked',
+            ]);
+
+            // c) payments
+            Payments::create([
+                'booking_id' => $booking->id,
+                'payment_method' => 'bank_transfer',
+                'payment_type' => 'full',
+                'payment_status' => 'pending_verification',
+                'amount' => $total,
+                'proof_image' => null,
+                'payment_due_date' => now()->addHours(24),
+            ]);
+
+            return $booking;
+        });
+
+        return redirect()
+            ->route('booking.payment', ['id' => $booking->id]) // adjust to your route
+            ->with('success', 'Booking created with id = ' . $booking->id . '. Please complete payment within 24 hours.');
+    }
+
+    public function bookingPayment($id)
+    {
+        // Load booking + its payment (and property if you want to show it)
+        $booking = Bookings::query()
+            ->with([
+                'payment:id,booking_id,payment_method,payment_type,payment_status,amount,proof_image,payment_due_date,created_at,updated_at',
+                'property:id,name,slug' // optional; requires relation on Bookings model
+            ])
+            ->findOrFail($id, ['id', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price', 'created_at']);
+
+        // Ownership guard
+        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized access to this booking.');
+
+        // If no payment row was created for some reason, handle gracefully
+        if (!$booking->payment) {
+            return back()->withErrors([
+                'payment' => 'Payment record was not found for this booking. Please contact support.'
+            ]);
         }
 
-        if ($request->price_to) {
-            $query->where('price', '<=', $request->price_to);
+        // Compute countdown (seconds; negative if overdue)
+        $secondsRemaining = Carbon::now()->diffInSeconds($booking->payment->payment_due_date, false);
+
+        return view('bookingPayment', [
+            'booking' => $booking,
+            'payment' => $booking->payment,
+            'secondsRemaining' => $secondsRemaining,
+        ]);
+    }
+
+    public function uploadPaymentProof(Bookings $booking, Request $request)
+    {
+        // Ownership guard
+        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized');
+
+        // Ensure booking has a payment row loaded (or fetch it)
+        $payment = $booking->payment; // relationship: hasOne(Payment::class, 'booking_id')
+        if (!$payment) {
+            return back()->withErrors(['payment' => 'Payment record not found.']);
         }
 
-        if ($request->sort_price) {
-            $query->orderBy('price', $request->sort_price);
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
+        // Validate image (max ~5MB)
+        $data = $request->validate([
+            'proof_image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ]);
 
-        // $all = $query->get();
-        $all = $query->paginate(12)->appends($request->all());
+        // Store to storage/app/public/payments/proofs/...
+        // Make sure you have run: php artisan storage:link
+        $path = $request->file('proof_image')->store('payments/proofs', 'public');
 
+        // Update payment (updated_at auto-updates)
+        $payment->update([
+            'proof_image' => $path,
+            'payment_status' => 'pending_verification', // keep or adjust as you like
+        ]);
 
-        return view('products', compact('all'));
+        return back()->with('success', 'Payment proof uploaded successfully. Please wait for verification.');
     }
 
 }
