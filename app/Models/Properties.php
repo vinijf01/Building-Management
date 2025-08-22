@@ -17,7 +17,7 @@ class Properties extends Model
     }
 
     public function images(){
-        return $this->hasMany(PropertyImages::class);
+        return $this->hasMany(PropertyImages::class, 'property_id');
     }
 
     public function bookings(){

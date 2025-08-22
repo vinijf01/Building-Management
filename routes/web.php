@@ -5,12 +5,11 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', [UserController::class, 'beranda']);
-
+Route::get('/dashboard', [UserController::class, 'beranda'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::get('/contact-us', function () {
     return view('contact-us'); // ganti 'nama_view' dengan nama file blade
@@ -33,9 +32,6 @@ Route::get('/detail/{slug}', [UserController::class, 'show'])
 
 // Route::get('/detail/{slug}', [UserController::class, 'show'])->middleware('auth')->name('detail.show');
 
-Route::get('/dashboard', [UserController::class, 'beranda'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::get('/products', [UserController::class, 'collection'])->name('products.list');
 
