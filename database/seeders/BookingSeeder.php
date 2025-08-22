@@ -5,9 +5,8 @@ namespace Database\Seeders;
 use App\Models\Bookings;
 use App\Models\Properties;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class BookingSeeder extends Seeder
 {
@@ -17,17 +16,31 @@ class BookingSeeder extends Seeder
     public function run(): void
     {
         $customer = User::where('role', 'customer')->first();
-        $property = Properties::first();
+        $properties = Properties::take(10)->get();
 
-        if ($customer && $property) {
-            Bookings::create([
-                'property_id' => $property->id,
-                'customer_id' => $customer->id,
-                'start_date' => Carbon::today()->addDays(7)->toDateString(),
-                'end_date' => Carbon::today()->addDays(7)->toDateString(),
-                'status' => 'pending_payment',
-                'total_price' => $property->price,
-            ]);
+        if ($customer && $properties->count()) {
+            foreach ($properties as $index => $property) {
+                $startDate = Carbon::today()->addDays($index + 1);
+                $endDate = $startDate->copy()->addDay();
+
+                // buat booking
+                $booking = Bookings::create([
+                    'property_id' => $property->id,
+                    'customer_id' => $customer->id,
+                    'start_date'  => $startDate->toDateString(),
+                    'end_date'    => $endDate->toDateString(),
+                    'status'      => 'pending_payment',
+                    'total_price' => $property->price,
+                ]);
+
+                // sekaligus buat schedule dengan status booked
+                $booking->schedules()->create([
+                    'property_id' => $property->id,
+                    'start_date'  => $startDate->toDateString(),
+                    'end_date'    => $endDate->toDateString(),
+                    'status'      => 'booked',
+                ]);
+            }
         }
     }
 }
