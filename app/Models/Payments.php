@@ -10,7 +10,7 @@ class Payments extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['booking_id', 'payment_method', 'payment_type', 'payment_status', 'amount', 'proof_image', 'payment_due_date'];
+    protected $fillable = ['booking_id', 'payment_method', 'payment_type', 'payment_status', 'amount', 'proof_image', 'payment_due_date', 'remark'];
 
     protected $casts = [
         'payment_due_date' => 'datetime',

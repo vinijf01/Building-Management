@@ -34,7 +34,7 @@ class Bookings extends Model
     //     return $this->hasOne(Schedules::class, 'booking_id');
     // }
 
-    public function schedules()
+    public function schedule()
 {
     return $this->hasMany(\App\Models\Schedules::class, 'booking_id');
 }
