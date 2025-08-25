@@ -59,7 +59,7 @@
                                                         class="px-3 py-1 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
                                                         Lihat Nota
                                                     </button>
-                                                @elseif ($transaction['status'] !== 'cancelled')
+                                                @elseif ($transaction['status'] === 'pending_payment')
                                                     <a href="{{ route('booking.payment', $transaction['id']) }}"
                                                         class="px-3 py-1 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
                                                         Edit

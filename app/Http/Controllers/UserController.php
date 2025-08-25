@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
@@ -198,33 +200,38 @@ class UserController extends Controller
         ]);
     }
 
-    public function uploadPaymentProof(Bookings $booking, Request $request)
-    {
-        // Ownership guard
-        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized');
+public function uploadPaymentProof(Bookings $booking, Request $request)
+{
+    // Ownership guard
+    abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized');
 
-        // Ensure booking has a payment row loaded (or fetch it)
-        $payment = $booking->payment; // relationship: hasOne(Payment::class, 'booking_id')
-        if (!$payment) {
-            return back()->withErrors(['payment' => 'Payment record not found.']);
-        }
-
-        // Validate image (max ~5MB)
-        $data = $request->validate([
-            'proof_image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-        ]);
-
-        // Store to storage/app/public/payments/proofs/...
-        // Make sure you have run: php artisan storage:link
-        $path = $request->file('proof_image')->store('payments/proofs', 'public');
-
-        // Update payment (updated_at auto-updates)
-        $payment->update([
-            'proof_image' => $path,
-            'payment_status' => 'pending_verification', // keep or adjust as you like
-        ]);
-
-        return back()->with('success', 'Payment proof uploaded successfully. Please wait for verification.');
+    // Ensure booking has a payment row loaded (or fetch it)
+    $payment = $booking->payment; // relationship: hasOne(Payment::class, 'booking_id')
+    if (!$payment) {
+        return back()->withErrors(['payment' => 'Payment record not found.']);
     }
+
+    // Validate image (max ~5MB)
+    $data = $request->validate([
+        'proof_image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+    ]);
+
+    // Hapus file lama kalau ada
+    if ($payment->proof_image && Storage::disk('public')->exists($payment->proof_image)) {
+        Storage::disk('public')->delete($payment->proof_image);
+    }
+
+    // Simpan file baru
+    $path = $request->file('proof_image')->store('payments/proofs', 'public');
+
+    // Update payment
+    $payment->update([
+        'proof_image' => $path,
+        'payment_status' => 'pending_verification', // bisa disesuaikan
+    ]);
+
+    return back()->with('success', 'Payment proof uploaded successfully. Please wait for verification.');
+}
+
 
 }

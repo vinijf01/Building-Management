@@ -79,10 +79,9 @@ class BookingsResource extends Resource
                             ->label('Remark')
                             ->visible(fn(callable $get) => in_array($get('payment_status'), ['rejected', 'cancelled']))
                             ->required(fn(callable $get) => in_array($get('payment_status'), ['rejected', 'cancelled'])),
-                        Forms\Components\FileUpload::make('payment.proof_image')
-                            ->image()
-                            ->disabled()
-                            ->label('Proof Image'),
+                        Forms\Components\ViewField::make('proof_image')
+                            ->label('Proof Image')
+                            ->view('components.proof-image'),
                     ])
 
             ]);
