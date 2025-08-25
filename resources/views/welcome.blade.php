@@ -59,9 +59,9 @@
                 <div id="category-kost" class="hidden grid mb-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($reguler as $unit)
                         <x-cards :title="$unit->name" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
-                                            ? asset('storage/' . $unit->cover_image)
-                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
-                            button-url="route('detail', $unit->slug)" />
+                            ? asset('storage/' . $unit->cover_image)
+                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+                            :button-url="route('detail', $unit->slug)" />
                     @endforeach
                 </div>
                 <div class="flex mb-12 items-center justify-center space-x-2 my-8">
