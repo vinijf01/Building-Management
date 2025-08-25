@@ -75,7 +75,7 @@
                     </svg>
 
                     <!-- Link kanan -->
-                    <a href="#" class="font-semibold underline text-gray-900 hover:text-indigo-600">
+                    <a href="#" class="font-semibold underline text-gray-900 hover:text-blue-600">
                         View Collection
                     </a>
                 </div>
@@ -238,7 +238,7 @@
                 </svg>
 
                 <!-- Link kanan -->
-                <a href="#" class="font-semibold underline text-gray-900 hover:text-indigo-600">
+                <a href="#" class="font-semibold underline text-gray-900 hover:text-blue-600">
                     View FAQ
                 </a>
             </div>

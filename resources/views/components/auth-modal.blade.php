@@ -1,4 +1,9 @@
-<div x-data>
+<div x-data x-init="@if ($errors->any()) @if ($errors->has('name') || $errors->has('phone_number') || $errors->has('password_confirmation'))
+                $store.auth.openRegister = true
+            @elseif($errors->has('email') || $errors->has('password'))
+                $store.auth.openLogin = true @endif
+@endif">
+
     <!-- Modal Login -->
     <div x-show="$store.auth.openLogin" x-cloak @click.self="$store.auth.openLogin = false"
         @keydown.escape.window="$store.auth.openLogin = false"
@@ -14,21 +19,26 @@
                 @csrf
                 <div class="my-4">
                     <label for="email" class="block text-sm font-medium">Email</label>
-                    <input id="email" type="email" name="email" required
-                        class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required
+                        class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 @error('email') border-red-500 @enderror" />
+
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="my-4">
                     <label for="password" class="block text-sm font-medium">Password</label>
                     <input id="password" type="password" name="password" required
-                        class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200" />
+                        class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 @error('email') border-red-500 @enderror" />
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-indigo-600 text-white my-4 py-2 px-4 rounded-lg hover:bg-indigo-700">
+                    class="w-full bg-blue-600 text-white my-4 py-2 px-4 rounded-lg hover:bg-blue-700">
                     Login
                 </button>
             </form>
+
 
             <p class="mt-4 text-center text-sm text-gray-600">
                 Don't have an account?
@@ -58,18 +68,28 @@
                 <div>
                     <label for="name" class="block text-sm font-medium">Name</label>
                     <input id="name" name="name" type="text" required
-                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="phone_number" class="block text-sm font-medium">Phone Number</label>
                         <input id="phone_number" name="phone_number" type="text" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                        @error('phone_number')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium">Email</label>
                         <input id="email" name="email" type="email" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
@@ -77,18 +97,20 @@
                     <div>
                         <label for="password" class="block text-sm font-medium">Password</label>
                         <input id="password" name="password" type="password" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="password_confirmation" class="block text-sm font-medium">Confirm Password</label>
                         <input id="password_confirmation" name="password_confirmation" type="password" required
-                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
                     </div>
                 </div>
 
-
                 <button type="submit"
-                    class="w-full bg-indigo-600 text-white my-4 py-2 px-4 rounded-lg hover:bg-indigo-700">
+                    class="w-full bg-blue-600 text-white my-4 py-2 px-4 rounded-lg hover:bg-blue-700">
                     Register
                 </button>
             </form>

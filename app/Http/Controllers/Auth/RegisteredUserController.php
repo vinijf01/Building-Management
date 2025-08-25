@@ -36,7 +36,7 @@ class RegisteredUserController extends Controller
             'phone_number' => [
                 'required',
                 'string',
-                'regex:/^[0-9]{10,15}$/', // hanya angka, min 10 digit, max 15 digit
+                'regex:/^08[0-9]{8,11}$/', 
             ],
         ]);
 
