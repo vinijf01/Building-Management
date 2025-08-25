@@ -1,11 +1,21 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [UserController::class, 'beranda'])->name('home');
+
+Route::get('/contact-us', function () {
+    return view('contact-us'); 
+})->name('contact-us');
+
+Route::get('/detail/{slug}', [UserController::class, 'show'])
+    ->name('detail');
+
+Route::get('/products', [UserController::class, 'collection'])->name('products.list');
 
 // Booking routes
 Route::middleware('auth')
@@ -19,18 +29,18 @@ Route::middleware('auth')
         Route::post('{booking}/payment/proof', 'uploadPaymentProof')->name('payment.proof');    // /booking/{booking}/payment/proof
     });
 
-Route::get('/transaction-history', function () {
-    return view('transactionHistory'); // ganti 'nama_view' dengan nama file blade
-})->name('transactionHistory');
+// Route::get('/transaction-history', function () {
+//     return view('transactionHistory')
+// })->name('transactionHistory');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactionHistory');
+});
+Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])
+    ->name('transactions.destroy');
 
-Route::get('/contact-us', function () {
-    return view('contact-us'); // ganti 'nama_view' dengan nama file blade
-})->name('contact-us');
+Route::get('/transactions/{id}/receipt', [TransactionController::class, 'showReceipt'])
+    ->name('transactions.receipt');
 
-Route::get('/detail/{slug}', [UserController::class, 'show'])
-    ->name('detail');
-
-Route::get('/products', [UserController::class, 'collection'])->name('products.list');
 
 
 Route::middleware('auth')->group(function () {
