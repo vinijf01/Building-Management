@@ -78,6 +78,15 @@ class PaymentsResource extends Resource
                         'danger'  => 'rejected',
                         'gray'    => 'cancelled',
                     ]),
+                Tables\Columns\TextColumn::make('booking.customer.phone_number')
+                    ->label('Phone / WA')
+                    ->formatStateUsing(fn($state) => $state)
+                    ->url(fn($record) => $record->booking?->customer?->phone_number
+                        ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $record->booking->customer->phone_number)
+                        : null, true)
+                    ->icon('heroicon-o-phone')
+                    ->tooltip('Klik untuk hubungi via WhatsApp'),
+
                 Tables\Columns\TextColumn::make('payment_due_date')->dateTime(),
                 Tables\Columns\ImageColumn::make('proof_image')
                     ->disk('public')
