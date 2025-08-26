@@ -200,7 +200,5 @@
                 }
             }
         });
-
-        // If you want to prefill dates from old input (validation back), set fp.setDate([...]) here.
     </script>
 </x-app-layout>
