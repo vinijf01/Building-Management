@@ -116,7 +116,7 @@
                 </a>
             </li>
             <li>
-                <a href="#"
+                <a href="{{ route('contact-us') }}"
                     class="block px-4 py-2 rounded hover:bg-gray-100 {{ request()->routeIs('contact') ? 'bg-blue-100 text-blue-500' : 'text-gray-900' }}">
                     Contact Us
                 </a>
