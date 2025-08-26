@@ -5,9 +5,13 @@ import Swiper from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/swiper-bundle.css';
 
-
-
 window.Alpine = Alpine;
+
+Alpine.data('gallery', () => ({
+    open: false,
+    active: 0,
+    images: window.galleryImages || [],
+}));
 
 document.addEventListener("alpine:init", () => {
     Alpine.store("auth", {

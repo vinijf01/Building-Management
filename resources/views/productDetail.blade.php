@@ -9,31 +9,23 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
-                    <div x-data="{
-                        open: false,
-                        active: 0,
-                        images: [
-                            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-                            'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80',
-                        ]
-                    }" class="max-w-6xl mx-auto px-2">
+                    <script>
+                        window.galleryImages = @json($images);
+                    </script>
+                    <div x-data="gallery" x-init="console.log(images)" class="max-w-6xl mx-auto px-2">
+
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full">
                             <div class="col-span-2 sm:col-span-2 sm:row-span-2 relative cursor-pointer h-48 sm:h-[400px]"
                                 @click="open=true; active=0">
                                 <img :src="images[0]" alt="Main"
-                                    class="w-full h-full object-cover rounded-lg" />
+                                    class="w-full h-full object-cover rounded-lg">
                             </div>
 
                             <div class="grid grid-cols-2 gap-2 col-span-2 sm:col-span-1 h-48 sm:h-[400px]">
                                 <template x-for="(img, index) in images.slice(1,5)" :key="index">
                                     <div class="relative cursor-pointer h-24 sm:h-[200px]"
                                         @click="open=true; active=index+1">
-                                        <img :src="img" class="w-full h-full object-cover rounded-lg" />
+                                        <img :src="img" class="w-full h-full object-cover rounded-lg">
 
                                         <template x-if="index === 3">
                                             <div
@@ -52,10 +44,10 @@
                             class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
                             <div class="relative w-full max-w-4xl">
                                 <button @click="open=false"
-                                    class="absolute top-2 right-2 text-white text-3xl font-bold">&times;</button>
+                                    class="absolute top-2 right-2 text-white text-3xl font-bold">×</button>
 
                                 <div class="flex items-center justify-center">
-                                    <img :src="images[active]" class="rounded-lg max-h-[70vh] w-auto mx-auto" />
+                                    <img :src="images[active]" class="rounded-lg max-h-[70vh] w-auto mx-auto">
                                 </div>
 
                                 <div class="flex justify-between mt-4 text-white text-sm sm:text-base">
@@ -67,6 +59,8 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class=" mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <div class="lg:col-span-2">
                             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">{{ $product->title }}</h1>
@@ -74,7 +68,7 @@
                             <div class="mt-6 space-y-2 text-gray-800">
                                 <p><span class="font-semibold">Category </span> {{ ucfirst($product->category) }}</p>
                             </div>
-                            
+
                         </div>
 
                         <div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Payments;
 use App\Models\Properties;
 use App\Models\Bookings;
+use App\Models\PropertyImages;
 use App\Models\Schedules;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -23,12 +24,27 @@ class UserController extends Controller
 
         return view('welcome', compact('eksklusif', 'reguler', 'all'));
     }
+
     public function show($slug)
     {
         $product = Properties::where('slug', $slug)->firstOrFail();
-        $relatedProducts = Properties::where('slug', '!=', $slug)->take(10)->get();
 
-        return view('productDetail', compact('product', 'relatedProducts'));
+        // Gambar tambahan
+        $additionalImages = PropertyImages::where('property_id', $product->id)
+            ->pluck('image_path')
+            ->map(fn($path) => Storage::url(trim($path))) // trim & convert ke URL
+            ->toArray();
+
+        // Cover image
+        $coverImage = Storage::url(trim($product->cover_image));
+
+        // Gabungkan cover + additional images
+        $images = $additionalImages;
+        array_unshift($images, $coverImage);
+
+        $relatedProducts = Properties::where('slug', '!=', $slug)->take(10)->get();
+        // dd($images);
+        return view('productDetail', compact('product', 'relatedProducts', 'images'));
     }
 
     public function collection(Request $request)
@@ -37,10 +53,10 @@ class UserController extends Controller
 
         if ($request->search) {
             $search = strtolower($request->search);
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(category) LIKE ?', ["%{$search}%"]);
+                    ->orWhereRaw('LOWER(description) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(category) LIKE ?', ["%{$search}%"]);
             });
         }
         if ($request->room_type) {
@@ -171,70 +187,68 @@ class UserController extends Controller
     }
 
     public function bookingPayment($id)
-{
-    $booking = Bookings::query()
-        ->with([
-            'payment:id,booking_id,payment_method,payment_type,payment_status,amount,proof_image,payment_due_date,created_at,updated_at',
-            'property:id,name,slug'
-        ])
-        ->where('booking_code', $id)
-        ->firstOrFail(['id', 'booking_code', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price', 'created_at']);
+    {
+        $booking = Bookings::query()
+            ->with([
+                'payment:id,booking_id,payment_method,payment_type,payment_status,amount,proof_image,payment_due_date,created_at,updated_at',
+                'property:id,name,slug'
+            ])
+            ->where('booking_code', $id)
+            ->firstOrFail(['id', 'booking_code', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price', 'created_at']);
 
-    abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized access to this booking.');
+        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized access to this booking.');
 
-    if (!$booking->payment) {
-        return back()->withErrors([
-            'payment' => 'Payment record was not found for this booking. Please contact support.'
+        if (!$booking->payment) {
+            return back()->withErrors([
+                'payment' => 'Payment record was not found for this booking. Please contact support.'
+            ]);
+        }
+
+        $secondsRemaining = now()->diffInSeconds($booking->payment->payment_due_date, false);
+
+        return view('bookingPayment', [
+            'booking' => $booking,
+            'payment' => $booking->payment,
+            'secondsRemaining' => $secondsRemaining,
+            'paymentDetails'   => [
+                'account_number' => env('PAYMENT_ACCOUNT_NUMBER', 'account_number'),
+                'account_name'   => env('PAYMENT_ACCOUNT_NAME', 'account_name'),
+                'bank_name'      => env('PAYMENT_BANK_NAME', 'bank_name'),
+            ],
         ]);
     }
 
-    $secondsRemaining = now()->diffInSeconds($booking->payment->payment_due_date, false);
 
-    return view('bookingPayment', [
-        'booking' => $booking,
-        'payment' => $booking->payment,
-        'secondsRemaining' => $secondsRemaining,
-        'paymentDetails'   => [
-            'account_number' => env('PAYMENT_ACCOUNT_NUMBER', 'account_number'),
-            'account_name'   => env('PAYMENT_ACCOUNT_NAME', 'account_name'),
-            'bank_name'      => env('PAYMENT_BANK_NAME', 'bank_name'),
-        ],
-    ]);
-}
+    public function uploadPaymentProof(Bookings $booking, Request $request)
+    {
+        // Ownership guard
+        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized');
 
+        // Ensure booking has a payment row loaded (or fetch it)
+        $payment = $booking->payment; // relationship: hasOne(Payment::class, 'booking_id')
+        if (!$payment) {
+            return back()->withErrors(['payment' => 'Payment record not found.']);
+        }
 
-public function uploadPaymentProof(Bookings $booking, Request $request)
-{
-    // Ownership guard
-    abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized');
+        // Validate image (max ~5MB)
+        $data = $request->validate([
+            'proof_image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ]);
 
-    // Ensure booking has a payment row loaded (or fetch it)
-    $payment = $booking->payment; // relationship: hasOne(Payment::class, 'booking_id')
-    if (!$payment) {
-        return back()->withErrors(['payment' => 'Payment record not found.']);
+        // Hapus file lama kalau ada
+        if ($payment->proof_image && Storage::disk('public')->exists($payment->proof_image)) {
+            Storage::disk('public')->delete($payment->proof_image);
+        }
+
+        // Simpan file baru
+        $path = $request->file('proof_image')->store('payments/proofs', 'public');
+
+        // Update payment
+        $payment->update([
+            'proof_image' => $path,
+            'payment_status' => 'pending_verification', // bisa disesuaikan
+        ]);
+
+        return back()->with('success', 'Payment proof uploaded successfully. Please wait for verification.');
     }
-
-    // Validate image (max ~5MB)
-    $data = $request->validate([
-        'proof_image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-    ]);
-
-    // Hapus file lama kalau ada
-    if ($payment->proof_image && Storage::disk('public')->exists($payment->proof_image)) {
-        Storage::disk('public')->delete($payment->proof_image);
-    }
-
-    // Simpan file baru
-    $path = $request->file('proof_image')->store('payments/proofs', 'public');
-
-    // Update payment
-    $payment->update([
-        'proof_image' => $path,
-        'payment_status' => 'pending_verification', // bisa disesuaikan
-    ]);
-
-    return back()->with('success', 'Payment proof uploaded successfully. Please wait for verification.');
-}
-
-
 }
