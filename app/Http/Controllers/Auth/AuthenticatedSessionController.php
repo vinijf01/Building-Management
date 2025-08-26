@@ -28,7 +28,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home', absolute: false));
+        if (Auth::user()->role !== 'customer') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/')
+                ->withErrors(['email' => 'Invalid email or password']);
+        }
+
+        // return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(url()->previous());
     }
 
     /**

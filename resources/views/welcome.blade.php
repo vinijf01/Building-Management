@@ -23,17 +23,20 @@
                             The way up to the top of the place is always no longer than you think
                         </p>
                         <div class="flex items-center space-x-4">
-                            <button
-                                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
-                                Find out more
-                        </button>
+                            <a href="#categoryTabs">
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
+                                    Find out more
+                                </button>
+                            </a>
+
                         </div>
                     </div>
                 </div>
             </div>
 
         </section>
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="categoryTabs" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex mt-6 mb-12 border-b-0">
                 <button id="btn-apartment" class="w-1/2 px-6 py-2 font-semibold border-b-2 focus:outline-none"
                     onclick="showCategory('apartment')">Eksklusif</button>
@@ -97,8 +100,8 @@
                         @foreach ($all as $unit)
                             <div class="swiper-slide">
                                 <x-cards :title="$unit->title" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
-                                            ? asset('storage/' . $unit->cover_image)
-                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+                                    ? asset('storage/' . $unit->cover_image)
+                                    : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
                                     :button-url="route('detail', $unit->slug)" />
                             </div>
                         @endforeach
@@ -182,10 +185,8 @@
                         class="w-full flex justify-between items-center p-4 text-left font-medium text-gray-900 dark:text-gray-200">
                         <span>How do I change or cancel my booking?</span>
                         <svg :class="open ? 'rotate-180' : ''" class="w-5 h-5 transition-transform text-gray-500"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7" />
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div x-show="open" x-collapse class="p-4 text-gray-600 dark:text-gray-400">
