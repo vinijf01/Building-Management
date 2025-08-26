@@ -10,7 +10,7 @@
         {{-- Ubah button jadi link --}}
         <a href="{{ $buttonUrl ?? '#' }}"
             class="mt-auto block text-center w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 transition">
-            {{ $buttonText }}
+            Book
         </a>
 
     </div>
