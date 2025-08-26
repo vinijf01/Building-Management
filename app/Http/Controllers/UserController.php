@@ -166,8 +166,8 @@ class UserController extends Controller
         });
 
         return redirect()
-            ->route('booking.payment', ['id' => $booking->id]) // adjust to your route
-            ->with('success', 'Booking created with id = ' . $booking->id . '. Please complete payment within 24 hours.');
+            ->route('booking.payment', ['id' => $booking->booking_code]) // adjust to your route
+            ->with('success', 'Booking created with bookiong code = ' . $booking->booking_code . '. Please complete payment within 24 hours.');
     }
 
     public function bookingPayment($id)
