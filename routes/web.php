@@ -29,9 +29,6 @@ Route::middleware('auth')
         Route::post('{booking}/payment/proof', 'uploadPaymentProof')->name('payment.proof');    // /booking/{booking}/payment/proof
     });
 
-// Route::get('/transaction-history', function () {
-//     return view('transactionHistory')
-// })->name('transactionHistory');
 Route::middleware(['auth'])->group(function () {
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactionHistory');
 });

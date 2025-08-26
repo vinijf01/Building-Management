@@ -63,7 +63,10 @@ class SchedulesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                // Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                Tables\Columns\TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('booking.property.name')->label('Property')->searchable(),
                 Tables\Columns\TextColumn::make('booking.customer.name')->label('Customer')->searchable(),
                 Tables\Columns\TextColumn::make('start_date')->dateTime(),
@@ -85,7 +88,7 @@ class SchedulesResource extends Resource
                 Tables\Actions\Action::make('complete')
                     ->label('Mark as Completed')
                     ->requiresConfirmation()
-                    ->visible(fn ($record) => $record->status === 'booked')
+                    ->visible(fn($record) => $record->status === 'booked')
                     ->action(function ($record) {
                         $record->update(['status' => 'completed']);
 

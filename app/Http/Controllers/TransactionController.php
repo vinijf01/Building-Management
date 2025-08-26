@@ -29,7 +29,7 @@ class TransactionController extends Controller
                     'rental_period' => $start->format('d M Y') . ' - ' . $end->format('d M Y'),
                     'total' => $booking->property->price * $days,
                     'status' => $booking->status,
-                    'id' => $booking->id,
+                    'id' => $booking->booking_code,
                     'payment_status' => $booking->payment->payment_status ?? null,
                     'remark' => $booking->payment->remark ?? null,
                 ];
@@ -42,7 +42,7 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         // cari booking
-        $booking = Bookings::findOrFail($id);
+        $booking = Bookings::where('booking_code', $id)->firstOrFail();
 
         // update status booking jadi cancelled
         $booking->update([
@@ -59,7 +59,8 @@ class TransactionController extends Controller
 
     public function showReceipt($id)
     {
-        $booking = Bookings::with(['property', 'customer'])->findOrFail($id);
+        $booking = Bookings::with(['property', 'customer'])->where('booking_code', $id)
+        ->firstOrFail();
 
         $start = \Carbon\Carbon::parse($booking->start_date);
         $end   = \Carbon\Carbon::parse($booking->end_date);
@@ -68,7 +69,7 @@ class TransactionController extends Controller
         $total = $booking->property->price * $days;
 
         return response()->json([
-            'id'            => $booking->id,
+            'id'            => $booking->booking_code,
             'property_name' => $booking->property->name,
             'customer'      => $booking->customer->name,
             'start_date'    => $start->format('d M Y'),

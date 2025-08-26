@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Filament\Tables\Grouping\Group;
 
 class PropertyImagesResource extends Resource
 {
@@ -30,7 +31,7 @@ class PropertyImagesResource extends Resource
                     ->columns(1)
                     ->schema([
                         Forms\Components\Select::make('property_id')
-                            ->label('Properti')
+                            ->label('Property')
                             ->relationship(
                                 name: 'property',
                                 titleAttribute: 'name',
@@ -43,7 +44,7 @@ class PropertyImagesResource extends Resource
 
                         // Create: multi upload
                         Forms\Components\FileUpload::make('images')
-                            ->label('Foto Properti')
+                            ->label('IMage Property')
                             ->image()
                             ->multiple()
                             ->reorderable()
@@ -60,7 +61,7 @@ class PropertyImagesResource extends Resource
 
                         // Edit: single upload
                         Forms\Components\FileUpload::make('image_path')
-                            ->label('Foto Properti')
+                            ->label('Image Properti')
                             ->image()
                             ->openable()
                             ->downloadable()
@@ -79,29 +80,17 @@ class PropertyImagesResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('property.name')
+                    ->collapsible(), // ✅ bikin collapse/expand
+            ])
+            ->defaultGroup('property.name')
             ->columns([
-                Tables\Columns\TextColumn::make('property.name')
-                    ->label('Properti')
-                    ->searchable()
-                    ->sortable(),
-
-
                 Tables\Columns\ImageColumn::make('image_path')
-                    ->label('Foto'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Properties')
+                    ->size(120),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

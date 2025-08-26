@@ -9,7 +9,7 @@ class Bookings extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price'];
+    protected $fillable = ['booking_code', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price'];
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -30,18 +30,23 @@ class Bookings extends Model
         return $this->hasOne(Payments::class, 'booking_id', 'id');
     }
 
-    // public function schedule(){
-    //     return $this->hasOne(Schedules::class, 'booking_id');
-    // }
-
     public function schedule()
-{
-    return $this->hasMany(\App\Models\Schedules::class, 'booking_id');
-}
+    {
+        return $this->hasMany(\App\Models\Schedules::class, 'booking_id');
+    }
 
 
     public function review()
     {
         return $this->hasOne(Reviews::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($booking) {
+            if (!$booking->booking_code) {
+                $booking->booking_code = 'book-' . rand(10000000, 99999999);
+            }
+        });
     }
 }
