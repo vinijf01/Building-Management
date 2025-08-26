@@ -18,8 +18,8 @@ class UserController extends Controller
     public function beranda()
     {
         $all = Properties::orderBy('created_at', 'desc')->get();
-        $eksklusif = Properties::where('category', 'eksklusif')->take(4)->get();
-        $reguler = Properties::where('category', 'reguler')->take(4)->get();
+        $eksklusif = Properties::where('category', 'eksklusif')->orderBy('created_at', 'desc')->take(4)->get();
+        $reguler = Properties::where('category', 'reguler')->orderBy('created_at', 'desc')->take(4)->get();
 
         return view('welcome', compact('eksklusif', 'reguler', 'all'));
     }

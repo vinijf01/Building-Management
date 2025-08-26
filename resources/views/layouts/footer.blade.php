@@ -2,14 +2,12 @@
   <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
 
-      <!-- Company Info + Social Media -->
       <div>
-        <h2 class="text-white text-lg font-semibold">Company</h2>
+        <h2 class="text-white text-lg font-semibold">Building Management</h2>
         <p class="mt-4 text-gray-400 text-sm">
           Leading solutions for your needs. Dedicated to quality and innovation.
         </p>
 
-        <!-- Social Media -->
         <div class="mt-6">
           <h3 class="text-white text-sm font-semibold">Follow Us</h3>
           <div class="flex space-x-4 mt-3">
@@ -35,14 +33,13 @@
         </div>
       </div>
 
-      <!-- Quick Links -->
       <div>
         <h2 class="text-white text-lg font-semibold">Quick Links</h2>
         <ul class="mt-4 space-y-2 text-gray-400 text-sm">
-          <li><a href="#" class="hover:text-white">About Us</a></li>
-          <li><a href="#" class="hover:text-white">Services</a></li>
-          <li><a href="#" class="hover:text-white">Careers</a></li>
-          <li><a href="#" class="hover:text-white">Contact</a></li>
+          <li><a href="#" class="hover:text-white">Home</a></li>
+          <li><a href="#" class="hover:text-white">Collections</a></li>
+          <li><a href="#" class="hover:text-white">Contact Us</a></li>
+          <li><a href="#" class="hover:text-white">FAQ</a></li>
         </ul>
       </div>
 
