@@ -171,34 +171,32 @@ class UserController extends Controller
     }
 
     public function bookingPayment($id)
-    {
-        // Load booking + its payment (and property if you want to show it)
-        $booking = Bookings::query()
-            ->with([
-                'payment:id,booking_id,payment_method,payment_type,payment_status,amount,proof_image,payment_due_date,created_at,updated_at',
-                'property:id,name,slug' // optional; requires relation on Bookings model
-            ])
-            ->findOrFail($id, ['id', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price', 'created_at']);
+{
+    $booking = Bookings::query()
+        ->with([
+            'payment:id,booking_id,payment_method,payment_type,payment_status,amount,proof_image,payment_due_date,created_at,updated_at',
+            'property:id,name,slug'
+        ])
+        ->where('booking_code', $id)
+        ->firstOrFail(['id', 'booking_code', 'property_id', 'customer_id', 'start_date', 'end_date', 'status', 'total_price', 'created_at']);
 
-        // Ownership guard
-        abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized access to this booking.');
+    abort_if($booking->customer_id !== Auth::id(), 403, 'Unauthorized access to this booking.');
 
-        // If no payment row was created for some reason, handle gracefully
-        if (!$booking->payment) {
-            return back()->withErrors([
-                'payment' => 'Payment record was not found for this booking. Please contact support.'
-            ]);
-        }
-
-        // Compute countdown (seconds; negative if overdue)
-        $secondsRemaining = Carbon::now()->diffInSeconds($booking->payment->payment_due_date, false);
-
-        return view('bookingPayment', [
-            'booking' => $booking,
-            'payment' => $booking->payment,
-            'secondsRemaining' => $secondsRemaining,
+    if (!$booking->payment) {
+        return back()->withErrors([
+            'payment' => 'Payment record was not found for this booking. Please contact support.'
         ]);
     }
+
+    $secondsRemaining = now()->diffInSeconds($booking->payment->payment_due_date, false);
+
+    return view('bookingPayment', [
+        'booking' => $booking,
+        'payment' => $booking->payment,
+        'secondsRemaining' => $secondsRemaining,
+    ]);
+}
+
 
 public function uploadPaymentProof(Bookings $booking, Request $request)
 {

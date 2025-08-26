@@ -55,7 +55,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap flex gap-2 items-center">
                                                 {{-- Actions sesuai status --}}
                                                 @if ($transaction['status'] === 'completed')
-                                                    <button onclick="showReceipt({{ $transaction['id'] }})"
+                                                    <button onclick="showReceipt('{{ $transaction['id'] }}')"
                                                         class="px-3 py-1 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
                                                         Lihat Nota
                                                     </button>
@@ -160,27 +160,35 @@
             document.getElementById('remarkModal-' + id).classList.add('hidden');
         }
 
-        async function showReceipt(id) {
-            try {
-                const res = await fetch(`/transactions/${id}/receipt`);
-                const data = await res.json();
+      async function showReceipt(id) {
+    try {
+        console.log("Booking code yang dikirim:", id); // cek apakah benar booking_code
 
-                let html = `
-    <p><strong>ID Booking:</strong> ${data.id}</p>
-    <p><strong>Property:</strong> ${data.property_name}</p>
-    <p><strong>Customer:</strong> ${data.customer}</p>
-    <p><strong>Rental Period:</strong> ${data.start_date} - ${data.end_date} (${data.days} malam)</p>
-    <p><strong>Total Payment:</strong> Rp${data.total_payment}</p>
-    <p><strong>Status:</strong> ${data.status}</p>
-`;
-
-
-                document.getElementById('receiptContent').innerHTML = html;
-                document.getElementById('receiptModal').classList.remove('hidden');
-            } catch (error) {
-                alert('Gagal memuat nota!');
-            }
+        const res = await fetch(`/transactions/${id}/receipt`);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
         }
+
+        const data = await res.json();
+        console.log("Data nota:", data); // cek isi response
+
+        let html = `
+            <p><strong>ID Booking:</strong> ${data.id}</p>
+            <p><strong>Property:</strong> ${data.property_name}</p>
+            <p><strong>Customer:</strong> ${data.customer}</p>
+            <p><strong>Rental Period:</strong> ${data.start_date} - ${data.end_date} (${data.days} malam)</p>
+            <p><strong>Total Payment:</strong> Rp${data.total_payment}</p>
+            <p><strong>Status:</strong> ${data.status}</p>
+        `;
+
+        document.getElementById('receiptContent').innerHTML = html;
+        document.getElementById('receiptModal').classList.remove('hidden');
+    } catch (error) {
+        console.error("Error fetch nota:", error);
+        alert('Gagal memuat nota!');
+    }
+}
+
 
         function closeModal() {
             document.getElementById('receiptModal').classList.add('hidden');
