@@ -54,4 +54,16 @@ class BookingChart extends ChartWidget
     {
         return 'line';
     }
+
+    protected function getOptions(): array
+    {
+        return [
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true, // mulai dari 0
+                    'min' => 0,            
+                ],
+            ],
+        ];
+    }
 }

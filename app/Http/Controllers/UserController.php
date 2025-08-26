@@ -194,6 +194,11 @@ class UserController extends Controller
         'booking' => $booking,
         'payment' => $booking->payment,
         'secondsRemaining' => $secondsRemaining,
+        'paymentDetails'   => [
+            'account_number' => env('PAYMENT_ACCOUNT_NUMBER', 'account_number'),
+            'account_name'   => env('PAYMENT_ACCOUNT_NAME', 'account_name'),
+            'bank_name'      => env('PAYMENT_BANK_NAME', 'bank_name'),
+        ],
     ]);
 }
 

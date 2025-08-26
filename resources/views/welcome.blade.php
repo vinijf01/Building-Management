@@ -98,8 +98,10 @@
                         @foreach ($all as $unit)
                             <div class="swiper-slide">
                                 <x-cards :title="$unit->name" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
+
                                     ? asset('storage/' . $unit->cover_image)
                                     : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+
                                     :button-url="route('detail', $unit->slug)" />
                             </div>
                         @endforeach
