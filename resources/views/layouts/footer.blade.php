@@ -36,9 +36,9 @@
       <div>
         <h2 class="text-white text-lg font-semibold">Quick Links</h2>
         <ul class="mt-4 space-y-2 text-gray-400 text-sm">
-          <li><a href="#" class="hover:text-white">Home</a></li>
-          <li><a href="#" class="hover:text-white">Collections</a></li>
-          <li><a href="#" class="hover:text-white">Contact Us</a></li>
+          <li><a href="{{route('home')}}" class="hover:text-white">Home</a></li>
+          <li><a href="{{ route('products.list') }}" class="hover:text-white">Collections</a></li>
+          <li><a href="{{ route('contact-us') }}" class="hover:text-white">Contact Us</a></li>
           <li><a href="#" class="hover:text-white">FAQ</a></li>
         </ul>
       </div>

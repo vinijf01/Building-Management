@@ -72,7 +72,7 @@
                             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">{{ $product->title }}</h1>
                             <p class="mt-4 text-lg text-gray-700">{{ $product->description }}</p>
                             <div class="mt-6 space-y-2 text-gray-800">
-                                <p><span class="font-semibold">Room Type:</span> {{ ucfirst($product->category) }}</p>
+                                <p><span class="font-semibold">Category </span> {{ ucfirst($product->category) }}</p>
                             </div>
                             
                         </div>
