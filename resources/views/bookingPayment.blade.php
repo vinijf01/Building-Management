@@ -4,7 +4,7 @@
         <header class="flex flex-wrap justify-between items-center gap-2 p-4 border-b border-gray-200">
             <h1 class="text-lg font-semibold">Booking Payment</h1>
             <span class="inline-block px-3 py-1 text-xs font-semibold text-gray-700 bg-gray-100 rounded-full">
-                #{{ $booking->id }}
+                #{{ $booking->booking_code }}
             </span>
         </header>
 
@@ -36,7 +36,7 @@
                             <div class="flex items-center justify-between gap-3">
                                 <div>
                                     <div class="text-xs text-gray-500">Account Number</div>
-                                    <div id="acctNumber" class="text-lg font-bold tracking-wide">872450823745</div>
+                                    <div id="acctNumber" class="text-lg font-bold tracking-wide">{{ $paymentDetails['account_number'] }}</div>
                                 </div>
                                 <button type="button" class="btn-secondary btn-sm"
                                     data-copy="#acctNumber">Copy</button>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="border border-gray-200 rounded-xl p-3">
                             <div class="text-xs text-gray-500">Bank</div>
-                            <div class="font-bold">BCA</div>
+                            <div class="font-bold">{{ $paymentDetails['bank_name'] }}</div>
                         </div>
                     </div>
 
@@ -52,13 +52,13 @@
                     <div class="space-y-3">
                         <div class="border border-gray-200 rounded-xl p-3">
                             <div class="text-xs text-gray-500">Account Name</div>
-                            <div class="font-bold">Mr. diy</div>
+                            <div class="font-bold">{{ $paymentDetails['account_name'] }}</div>
                         </div>
                         <div class="border border-gray-200 rounded-xl p-3">
                             <div class="flex items-center justify-between gap-3">
                                 <div>
                                     <div class="text-xs text-gray-500">Price to pay</div>
-                                    <div id="amountToPay" class="text-lg font-bold">Rp. 2.000.000</div>
+                                    <div id="amountToPay" class="text-lg font-bold">Rp {{ number_format($booking->total_price, 0, ',', '.') }}</div>
                                 </div>
                                 <button type="button" class="btn-secondary btn-sm"
                                     data-copy="#amountToPay">Copy</button>
@@ -124,7 +124,7 @@
         <div class="bg-white rounded-xl w-full max-w-lg shadow-xl flex flex-col overflow-hidden">
             <header class="flex justify-between items-center p-4 border-b border-gray-200">
                 <h3 class="text-lg font-semibold">Upload Payment Proof</h3>
-                <button id="closeProofModal" type="button" class="btn-secondary btn-sm">Close</button>
+                {{-- <button id="closeProofModal" type="button" class="btn-secondary btn-sm">Close</button> --}}
             </header>
 
             <form id="proofForm" action="{{ route('booking.payment.proof', $booking) }}" method="POST"
@@ -175,7 +175,6 @@
             // Modal logic
             const openBtn = document.getElementById('openProofModal');
             const modal = document.getElementById('proofModal');
-            const closeBtn = document.getElementById('closeProofModal');
             const cancelBtn = document.getElementById('cancelBtn');
             const browseBtn = document.getElementById('browseBtn');
             const input = document.getElementById('proofInput');
@@ -200,7 +199,6 @@
                 }
 
                 openBtn.addEventListener('click', openModal);
-                closeBtn.addEventListener('click', closeModal);
                 cancelBtn.addEventListener('click', closeModal);
                 browseBtn.addEventListener('click', () => input.click());
 
