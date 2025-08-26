@@ -41,9 +41,19 @@ class PaymentsResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Payment Info')
                     ->schema([
-                        Forms\Components\TextInput::make('booking_id')->label('Booking ID')->disabled(),
-                        Forms\Components\TextInput::make('booking.property.name')->label('Property')->disabled(),
-                        Forms\Components\TextInput::make('booking.customer.name')->label('Customer')->disabled(),
+                        Forms\Components\TextInput::make('booking_id')->label('Booking ID')->hidden(),
+                        Forms\Components\TextInput::make('property_name')
+                            ->label('Property')
+                            ->disabled()
+                            ->formatStateUsing(fn($record) => $record?->booking?->property?->name),
+
+                        Forms\Components\TextInput::make('customer_name')
+                            ->label('Customer')
+                            ->disabled()
+                            ->formatStateUsing(fn($record) => $record?->booking?->customer?->name),
+
+
+
                         Forms\Components\TextInput::make('amount')->label('Amount')->disabled()->numeric(),
                         Forms\Components\Select::make('payment_status')
                             ->options([
@@ -67,7 +77,10 @@ class PaymentsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                // Tables\Columns\TextColumn::make('id')->label('ID')->sortable(),
+                Tables\Columns\TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('booking.property.name')->label('Property')->searchable(),
                 Tables\Columns\TextColumn::make('booking.customer.name')->label('Customer')->searchable(),
                 Tables\Columns\TextColumn::make('amount')->money('idr', true),
@@ -88,11 +101,6 @@ class PaymentsResource extends Resource
                     ->tooltip('Klik untuk hubungi via WhatsApp'),
 
                 Tables\Columns\TextColumn::make('payment_due_date')->dateTime(),
-                Tables\Columns\ImageColumn::make('proof_image')
-                    ->disk('public')
-                    ->label('Proof')
-                    ->toggleable(false)
-                    ->rounded(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('payment_status')

@@ -75,7 +75,7 @@
                     </svg>
 
                     <!-- Link kanan -->
-                    <a href="#" class="font-semibold underline text-gray-900 hover:text-blue-600">
+                    <a href="{{ route('products.list') }}" class="font-semibold underline text-gray-900 hover:text-blue-600">
                         View Collection
                     </a>
                 </div>

@@ -22,7 +22,7 @@ class PropertiesResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'Properties';
-    
+
     public static function getEloquentQuery(): Builder
     {
         // Ambil query default
@@ -90,7 +90,11 @@ class PropertiesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('penyewa_id')
                     ->numeric()
+                    ->hidden()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
