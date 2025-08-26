@@ -3,7 +3,6 @@
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="relative rounded-2xl overflow-hidden">
-                <!-- Background image full -->
                 <div
                     class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center">
                 </div>
@@ -12,8 +11,6 @@
                     class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent dark:from-gray-900 dark:via-gray-900/80">
                 </div>
 
-
-                <!-- Konten -->
                 <div class="relative max-w-7xl mx-auto px-6 lg:px-8 py-16 flex items-center">
                     <div class="max-w-2xl">
                         <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
@@ -23,17 +20,20 @@
                             The way up to the top of the place is always no longer than you think
                         </p>
                         <div class="flex items-center space-x-4">
-                            <button
-                                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
-                                Find out more
-                        </button>
+                            <a href="#collections">
+                                <button
+                                    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
+                                    Find out more
+                                </button>
+                            </a>
+
                         </div>
                     </div>
                 </div>
             </div>
 
         </section>
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="collections" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex mt-6 mb-12 border-b-0">
                 <button id="btn-apartment" class="w-1/2 px-6 py-2 font-semibold border-b-2 focus:outline-none"
                     onclick="showCategory('apartment')">Eksklusif</button>
@@ -75,7 +75,8 @@
                     </svg>
 
                     <!-- Link kanan -->
-                    <a href="{{ route('products.list') }}" class="font-semibold underline text-gray-900 hover:text-blue-600">
+                    <a href="{{ route('products.list') }}"
+                        class="font-semibold underline text-gray-900 hover:text-blue-600">
                         View Collection
                     </a>
                 </div>
@@ -86,7 +87,7 @@
         </section>
 
         <section class="max-w-7xl mt-24 mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-12">
+            <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                     Best Deals for You
                 </h2>
@@ -97,8 +98,10 @@
                         @foreach ($all as $unit)
                             <div class="swiper-slide">
                                 <x-cards :title="$unit->name" :description="$unit->description" :price="$unit->price" :image-url="$unit->cover_image
-                                            ? asset('storage/' . $unit->cover_image)
-                                            : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+
+                                    ? asset('storage/' . $unit->cover_image)
+                                    : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80'"
+
                                     :button-url="route('detail', $unit->slug)" />
                             </div>
                         @endforeach
@@ -113,14 +116,13 @@
         </section>
 
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-            <div class="mb-12">
+            <div class="mb-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                     Why book with Us?
                 </h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Card 1 -->
                 <div class="flex items-start space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-blue-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -134,8 +136,6 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Card 2 -->
                 <div class="flex items-start space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -150,8 +150,6 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Card 3 -->
                 <div class="flex items-start space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-purple-600" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -182,10 +180,8 @@
                         class="w-full flex justify-between items-center p-4 text-left font-medium text-gray-900 dark:text-gray-200">
                         <span>How do I change or cancel my booking?</span>
                         <svg :class="open ? 'rotate-180' : ''" class="w-5 h-5 transition-transform text-gray-500"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7" />
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
                     <div x-show="open" x-collapse class="p-4 text-gray-600 dark:text-gray-400">
@@ -238,49 +234,16 @@
                 </svg>
 
                 <!-- Link kanan -->
-                <a href="#" class="font-semibold underline text-gray-900 hover:text-blue-600">
+                <a href="{{ route('faq') }}" class="font-semibold underline text-gray-900 hover:text-blue-600">
                     View FAQ
                 </a>
             </div>
         </section>
 
-        <!-- Search Section Before Footer -->
         <section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
-            <!-- Background image -->
-            <div class="relative rounded-2xl mb-12 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-                    alt="Coliving and Apartment" class="absolute inset-0 w-full h-full object-cover" />
-
-                <!-- Overlay -->
-                <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-
-                <!-- Content -->
-                <div class="relative flex flex-col items-center justify-center text-center py-24 px-6">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-6">
-                        Find coliving and apartment for you
-                    </h2>
-
-                    <!-- Search Bar -->
-                    <form action="{{ route('products.list') }}" method="GET" class="w-full max-w-lg">
-                        <div class="flex bg-white rounded-lg overflow-hidden shadow-lg">
-                            <input type="text" name="q"
-                                placeholder="Search by location, property, or keyword..."
-                                class="w-full px-4 py-3 text-gray-700 focus:outline-none" />
-                            <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3">
-                                Search
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <x-search-section title="Find your dream home" placeholder="Search houses, apartments..." button="Go!"
+                :action="route('products.list')" />
         </section>
-
-
-
-
-
-
 
         <script>
             function showCategory(category) {
@@ -321,9 +284,6 @@
                 showCategory('apartment');
             });
 
-
-
-            // Initialize default category on page load
             document.addEventListener('DOMContentLoaded', () => {
                 showCategory('apartment');
             });

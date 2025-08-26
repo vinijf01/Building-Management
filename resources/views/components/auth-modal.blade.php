@@ -32,7 +32,7 @@
                     <input id="password" type="password" name="password" required
                         class="mt-1 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 @error('email') border-red-500 @enderror" />
                 </div>
-
+                <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
                 <button type="submit"
                     class="w-full bg-blue-600 text-white my-4 py-2 px-4 rounded-lg hover:bg-blue-700">
                     Login
