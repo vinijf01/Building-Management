@@ -16,19 +16,8 @@
             @yield('message')
         </p>
         <p class="mt-2 text-gray-600">
-            Halaman yang kamu cari tidak ditemukan atau sudah dipindahkan.
+             @yield('description')
         </p>
-
-        <div class="mt-6 flex justify-center gap-4">
-            <a href="{{ url('/') }}" 
-               class="px-6 py-3 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition">
-                Kembali ke Beranda
-            </a>
-            <a href="{{ url()->previous() }}" 
-               class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl shadow hover:bg-gray-300 transition">
-                Halaman Sebelumnya
-            </a>
-        </div>
     </div>
 </body>
 </html>

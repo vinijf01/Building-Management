@@ -30,6 +30,7 @@ class PenyewaPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#5191FF',
             ])
+            ->authGuard('penyewa')               
             ->discoverResources(in: app_path('Filament/Penyewa/Resources'), for: 'App\\Filament\\Penyewa\\Resources')
             ->discoverPages(in: app_path('Filament/Penyewa/Pages'), for: 'App\\Filament\\Penyewa\\Pages')
             ->pages([
