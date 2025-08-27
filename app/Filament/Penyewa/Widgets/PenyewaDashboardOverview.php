@@ -99,56 +99,59 @@ class PenyewaDashboardOverview extends BaseWidget
     }
 }
 
-/**
- * Widget Chart Pendapatan Bulanan
- */
 class PenyewaIncomeChart extends ChartWidget
 {
-    protected static ?string $heading = 'Grafik Pendapatan Bulanan';
-    protected int | string | array $columnSpan = 'full';
+    protected static ?string $heading = 'Pendapatan 6 Bulan Terakhir';
 
     protected function getData(): array
     {
         $penyewaId = Auth::id();
 
-        // PostgreSQL-friendly: gunakan EXTRACT(MONTH FROM created_at)
-        $income = Payments::whereHas('booking.property', function ($q) use ($penyewaId) {
+        // Ambil pendapatan per bulan + tahun untuk 6 bulan terakhir
+        $data = Payments::whereHas('booking.property', function ($q) use ($penyewaId) {
                 $q->where('penyewa_id', $penyewaId);
             })
             ->where('payment_status', 'verified')
-            ->whereYear('created_at', now()->year)
-            ->selectRaw('EXTRACT(MONTH FROM created_at) AS bulan, SUM(amount) AS total')
-            ->groupByRaw('EXTRACT(MONTH FROM created_at)')
-            ->orderByRaw('EXTRACT(MONTH FROM created_at)')
-            ->pluck('total', 'bulan')
-            ->toArray();
+            ->where('created_at', '>=', now()->subMonths(6))
+            ->selectRaw("DATE_PART('year', created_at) as tahun, DATE_PART('month', created_at) as bulan, SUM(amount) as total")
+            ->groupBy('tahun', 'bulan')
+            ->orderBy('tahun')
+            ->orderBy('bulan')
+            ->get();
 
-       // Lengkapi 12 bulan (Jan–Des)
-        $data = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $data[] = isset($income[$i]) ? (float) $income[$i] : 0;
+        // Ubah hasil query ke associative array [YYYY-MM => total]
+        $dataMap = [];
+        foreach ($data as $row) {
+            $key = sprintf('%04d-%02d', $row->tahun, $row->bulan); // contoh: 2025-02
+            $dataMap[$key] = $row->total;
+        }
+
+        // Buat label 6 bulan terakhir
+        $labels = [];
+        $values = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $key = $date->format('Y-m'); // contoh: 2025-02
+            $labels[] = $date->format('M Y'); // contoh: Feb 2025
+            $values[] = $dataMap[$key] ?? 0;
         }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Pendapatan',
-                    'data' => $data,
-                    'backgroundColor' => 'rgba(79, 70, 229, 0.6)',
+                    'data' => $values,
+                   'backgroundColor' => 'rgba(79, 70, 229, 0.6)',
                     'borderColor' => 'rgba(79, 70, 229, 1)',
-                    'tension' => 0.3,
-                    'fill' => true,
                 ],
             ],
-            'labels' => [
-                'Jan','Feb','Mar','Apr','Mei','Jun',
-                'Jul','Agu','Sep','Okt','Nov','Des'
-            ],
+            'labels' => $labels,
         ];
     }
 
     protected function getType(): string
     {
-        return 'line'; // bisa diganti 'bar' kalau mau
+        return 'line'; // bisa diganti 'line' kalau mau
     }
 }
