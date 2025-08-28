@@ -2,9 +2,17 @@
 
 namespace App\Filament\Penyewa\Widgets;
 
+use App\Models\Bookings;
 use App\Models\Payments;
+use App\Models\Properties;
+use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Auth;
+
+/**
+ * Widget Statistik Ringkas
+ */
 
 class PenyewaIncomeChart extends ChartWidget
 {
@@ -14,24 +22,34 @@ class PenyewaIncomeChart extends ChartWidget
     {
         $penyewaId = Auth::id();
 
-        // Ambil pendapatan per bulan untuk 6 bulan terakhir
+        // Ambil pendapatan per bulan + tahun untuk 6 bulan terakhir
         $data = Payments::whereHas('booking.property', function ($q) use ($penyewaId) {
                 $q->where('penyewa_id', $penyewaId);
             })
             ->where('payment_status', 'verified')
             ->where('created_at', '>=', now()->subMonths(6))
-            ->selectRaw('MONTH(created_at) as bulan, SUM(amount) as total')
-            ->groupBy('bulan')
-            ->pluck('total', 'bulan');
+            ->selectRaw("DATE_PART('year', created_at) as tahun, DATE_PART('month', created_at) as bulan, SUM(amount) as total")
+            ->groupBy('tahun', 'bulan')
+            ->orderBy('tahun')
+            ->orderBy('bulan')
+            ->get();
 
-        // Label bulan (dari sekarang mundur 6 bulan)
+        // Ubah hasil query ke associative array [YYYY-MM => total]
+        $dataMap = [];
+        foreach ($data as $row) {
+            $key = sprintf('%04d-%02d', $row->tahun, $row->bulan); // contoh: 2025-02
+            $dataMap[$key] = $row->total;
+        }
+
+        // Buat label 6 bulan terakhir
         $labels = [];
         $values = [];
 
         for ($i = 5; $i >= 0; $i--) {
-            $bulan = now()->subMonths($i)->month;
-            $labels[] = now()->subMonths($i)->format('M Y');
-            $values[] = $data[$bulan] ?? 0;
+            $date = now()->subMonths($i);
+            $key = $date->format('Y-m'); // contoh: 2025-02
+            $labels[] = $date->format('M Y'); // contoh: Feb 2025
+            $values[] = $dataMap[$key] ?? 0;
         }
 
         return [
@@ -39,8 +57,8 @@ class PenyewaIncomeChart extends ChartWidget
                 [
                     'label' => 'Pendapatan',
                     'data' => $values,
-                    'backgroundColor' => '#4ade80', // hijau
-                    'borderColor' => '#22c55e',
+                   'backgroundColor' => 'rgba(79, 70, 229, 0.6)',
+                    'borderColor' => 'rgba(79, 70, 229, 1)',
                 ],
             ],
             'labels' => $labels,
@@ -49,6 +67,6 @@ class PenyewaIncomeChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar'; // bisa 'line' atau 'bar'
+        return 'line'; // bisa diganti 'line' kalau mau
     }
 }
