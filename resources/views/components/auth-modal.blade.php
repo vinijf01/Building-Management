@@ -1,8 +1,10 @@
-<div x-data x-init="@if ($errors->any()) @if ($errors->has('name') || $errors->has('phone_number') || $errors->has('password_confirmation'))
-                $store.auth.openRegister = true
-            @elseif($errors->has('email') || $errors->has('password'))
-                $store.auth.openLogin = true @endif
-@endif">
+<div x-data  x-init="
+        @if ($errors->register->any())
+            $store.auth.openRegister = true
+        @elseif ($errors->login->any())
+            $store.auth.openLogin = true
+        @endif
+     ">
 
     <!-- Modal Login -->
     <div x-show="$store.auth.openLogin" x-cloak @click.self="$store.auth.openLogin = false"

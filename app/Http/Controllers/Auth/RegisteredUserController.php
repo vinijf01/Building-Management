@@ -38,7 +38,8 @@ class RegisteredUserController extends Controller
                 'string',
                 'regex:/^08[0-9]{8,11}$/', 
             ],
-        ]);
+        ], [], [], 'register');
+
 
         // dd($request->all());
 

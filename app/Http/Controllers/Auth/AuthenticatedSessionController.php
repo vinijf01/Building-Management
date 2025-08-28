@@ -33,8 +33,8 @@ class AuthenticatedSessionController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/')
-                ->withErrors(['email' => 'Invalid email or password']);
+            return redirect('/')->withErrors(['email' => 'Invalid email or password'], 'login');
+
         }
 
         // return redirect()->intended(route('home', absolute: false));

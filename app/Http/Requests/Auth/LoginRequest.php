@@ -47,7 +47,7 @@ class LoginRequest extends FormRequest
         // ganti pesan default
         throw ValidationException::withMessages([
             'email' => __('Email or password wrong.'),
-        ]);
+        ])->errorBag('login');
     }
 
         RateLimiter::clear($this->throttleKey());
@@ -73,7 +73,7 @@ class LoginRequest extends FormRequest
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
-        ]);
+        ])->errorBag('login');
     }
 
     /**
