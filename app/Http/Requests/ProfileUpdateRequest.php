@@ -17,6 +17,11 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'phone_number' => [
+            'required',
+            'string',
+            'regex:/^08[0-9]{8,11}$/',
+            ],
             'email' => [
                 'required',
                 'string',
